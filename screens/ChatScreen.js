@@ -7,7 +7,8 @@ import { CONVERSATIONS } from '../test-data/dummyData';
 const ChatScreen = (props) => {
     const currentConversation = CONVERSATIONS.find(c => c.id === "r1");
     const logged = currentConversation.users.find(u => u.id === "1").id;
-    console.log(currentConversation);
+
+    console.log(props.navigation);
 
     const showMessages = (messages) => {
         return (
@@ -29,6 +30,13 @@ const ChatScreen = (props) => {
 
     )
 };
+
+ChatScreen.navigationOptions = (navigationData) => {
+    const userFullName = navigationData.navigation.getParam("userFullName");
+    return {
+        headerTitle: userFullName
+    }
+}
 
 const chatStyle = StyleSheet.create({
     screen: {

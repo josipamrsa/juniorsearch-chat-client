@@ -117,8 +117,11 @@ const ChatNavigation = createStackNavigator({
             {
                 headerTitle: "Chat app dashboard",
                 headerRight: () => {
+                    const { userSignOff } = useWebSockets();
+                    // TODO - uklanjanje activeConnection vrijednosti (asyncstorage ima podatke o korisnicima)
+
                     const signOutUser = async () => {
-                        const { userSignOff } = useWebSockets();
+                        
                         try {
                             // dohvati sve ključeve
                             let keys = await AsyncStorage.getAllKeys();

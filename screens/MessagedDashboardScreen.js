@@ -40,7 +40,9 @@ const MessagedDashboardScreen = (props) => {
                 props.navigation.navigate({
                     routeName: "ChatWindow",
                     params: {
-                        phoneNumber: user.item.phone
+                        phoneNumber: user.item.phoneNumber,
+                        activeConnection: user.item.activeConnection,
+                        userFullName: `${user.item.firstName} ${user.item.lastName}`
                     }
                 })
             }}

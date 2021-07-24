@@ -9,7 +9,8 @@ import authService from '../services/authService';
 const DashboardScreen = (props) => {
     const loggedUser = props.navigation.getParam("user");
     const [userList, setUserList] = useState([]);
-    const [notification, setNotification] = useState([]);
+    
+    const { userVerified, notification } = useWebSockets();
 
     const storeUserData = async (key, value) => {
         try {
@@ -18,8 +19,6 @@ const DashboardScreen = (props) => {
     }
 
     useEffect(() => {
-        const { userVerified, notification } = useWebSockets();
-        
         authService.setToken(loggedUser.token);
         authService.fetchUserData(loggedUser.phone)
             .then((response) => {
@@ -53,7 +52,9 @@ const DashboardScreen = (props) => {
                 props.navigation.navigate({
                     routeName: "ChatWindow",
                     params: {
-                        phoneNumber: user.item.phone
+                        phoneNumber: user.item.phoneNumber,
+                        activeConnection: user.item.activeConnection,
+                        userFullName: `${user.item.firstName} ${user.item.lastName}`
                     }
                 })
             }}
