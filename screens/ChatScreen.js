@@ -3,12 +3,15 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import MessageBubble from '../components/MessageBubble';
 import MessageInput from '../components/MessageInput';
 import { CONVERSATIONS } from '../test-data/dummyData';
+import { useWebSockets } from '../hooks/useWebSockets';
 
 const ChatScreen = (props) => {
     const currentConversation = CONVERSATIONS.find(c => c.id === "r1");
     const logged = currentConversation.users.find(u => u.id === "1").id;
+    const connect = props.navigation.getParam("connect");
+    connect();
 
-    console.log(props.navigation);
+    //console.log(props.navigation);
 
     const showMessages = (messages) => {
         return (

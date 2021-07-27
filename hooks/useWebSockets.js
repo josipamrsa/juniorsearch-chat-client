@@ -3,6 +3,7 @@ import { socket } from '../services/socket';
 
 const USER_VERIFIED = "userVerified";
 const NEW_USER_LOGGED_IN = "newUserLoggedIn";
+const NEW_PRIVATE_MESSAGE = "newPrivateMessage";
 
 const useWebSockets = () => {
     const socketRef = useRef();
@@ -11,7 +12,7 @@ const useWebSockets = () => {
 
     useEffect(() => {
         // TODO - token!!!!
-        socketRef.current = socket; 
+        socketRef.current = socket;
 
         socketRef.current.on('connect', () => {
             console.log("...connecting");
@@ -22,6 +23,10 @@ const useWebSockets = () => {
             const incomingNotification = { ...incoming };
             setNotification(incomingNotification);
         });
+
+        socketRef.current.on(NEW_PRIVATE_MESSAGE, (incoming) => {
+            console.log(`to >> ${socketRef.current.id} >> from >> ${incoming}`);
+        })
 
         return () => { socketRef.current.disconnect(); }
     }, []);
@@ -36,6 +41,14 @@ const useWebSockets = () => {
         return socketRef.current.id;
     }
 
+    const connectToRoom = (participantId) => {
+        console.log(`from: ${socketRef.current.id}`);
+        console.log(`to: ${participantId}`);
+        socketRef.current.emit(NEW_PRIVATE_MESSAGE, {
+            participant: participantId
+        });
+    }
+
     const userSignOff = () => {
         socketRef.current.disconnect();
     }
@@ -44,7 +57,8 @@ const useWebSockets = () => {
         userId,
         userVerified,
         notification,
-        userSignOff
+        userSignOff,
+        connectToRoom
     }
 }
 

@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 
 import useWebSockets from "../hooks/useWebSockets";
+import authService from "../services/authService";
 
 import ChatScreen from '../screens/ChatScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -118,13 +119,26 @@ const ChatNavigation = createStackNavigator({
                 headerTitle: "Chat app dashboard",
                 headerRight: () => {
                     const { userSignOff } = useWebSockets();
-                    // TODO - uklanjanje activeConnection vrijednosti (asyncstorage ima podatke o korisnicima)
+
+                    const setOffline = async (key) => {
+                        try {
+                            const logged = await AsyncStorage.getItem(`@${key}`);
+                            let parseLogged = JSON.parse(logged);
+
+                            authService.setOnlineStatus(parseLogged.phone, { onlineTag: false })
+                                .then((response) => {
+                                    console.log(response);
+                                }).catch(err => console.log(err));
+                        } catch (err) { console.log(err); }
+                    }
 
                     const signOutUser = async () => {
-                        
+
                         try {
                             // dohvati sve ključeve
                             let keys = await AsyncStorage.getAllKeys();
+                            setOffline("JuniorChat_user");
+
                             // koristi se ovo umjesto clear - https://react-native-async-storage.github.io/async-storage/docs/api#clear
                             await AsyncStorage.multiRemove(
                                 keys.filter(key => key.includes("JuniorChat"))
@@ -132,7 +146,7 @@ const ChatNavigation = createStackNavigator({
                             // makni aktivnu socket vezu (?)
                             userSignOff();
                             // vrati se na login ekran
-                            navigation.replace("SignIn");
+                            navigation.replace("SignIn"); 
 
                         } catch (e) { console.log(e); }
                     }

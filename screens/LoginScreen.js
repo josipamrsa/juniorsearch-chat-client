@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 
 import { NavigationActions } from 'react-navigation'; // za ugniježđenu navigaciju
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import signInService from '../services/signInService';
 import CustomizableButton from '../components/CustomizableButton';
@@ -22,17 +21,12 @@ import InputComponent from '../components/InputComponent';
 
 const LoginScreen = (props) => {
     //console.log(signInService);
-    const [email, setEmail] = useState("validni@mail.hr");
-    const [pass, setPassword] = useState("trulasljiva");
+    const [email, setEmail] = useState("jopa@jopa.hr");
+    const [pass, setPassword] = useState("jopica4");
 
-    const checkEmail = (data) => {
-        //console.log(data);
-        setEmail(data);
-    }
+    const checkEmail = (data) => setEmail(data); 
 
-    const checkPassword = (data) => {
-        setPassword(data);
-    }
+    const checkPassword = (data) => setPassword(data);
 
     const signInUser = async () => {
         try {

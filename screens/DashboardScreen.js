@@ -9,8 +9,12 @@ import authService from '../services/authService';
 const DashboardScreen = (props) => {
     const loggedUser = props.navigation.getParam("user");
     const [userList, setUserList] = useState([]);
-    
-    const { userVerified, notification } = useWebSockets();
+
+    const {
+        userVerified,
+        connectToRoom,
+        notification
+    } = useWebSockets();
 
     const storeUserData = async (key, value) => {
         try {
@@ -22,22 +26,20 @@ const DashboardScreen = (props) => {
         authService.setToken(loggedUser.token);
         authService.fetchUserData(loggedUser.phone)
             .then((response) => {
-                //console.log(response);
                 setUserList(response.notChatted);
                 storeUserData("JuniorChat_user", loggedUser); // TODO - spremiti pod Constants ove stringove
                 const socket = userVerified();
 
                 authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
                     .then((response) => {
-                        //console.log(response); // potencijalno detalji o korisniku za profile dio?
                         storeUserData("JuniorChat_userDetail", response);
-                        //console.log("online")
+                        //console.log(notification);
                     });
             })
             .catch((err) => {
                 //console.log(err.response)
             });
-    }, []);
+    }, [notification]);
 
     const showUsers = (user) => {
         //console.log(user);
@@ -54,7 +56,10 @@ const DashboardScreen = (props) => {
                     params: {
                         phoneNumber: user.item.phoneNumber,
                         activeConnection: user.item.activeConnection,
-                        userFullName: `${user.item.firstName} ${user.item.lastName}`
+                        userFullName: `${user.item.firstName} ${user.item.lastName}`,
+                        connect: () => user.item.activeConnection ?
+                            connectToRoom(user.item.activeConnection) :
+                            user.item.phoneNumber
                     }
                 })
             }}
@@ -63,9 +68,9 @@ const DashboardScreen = (props) => {
     }
 
     return (
-         <FlatList
+        <FlatList
             data={userList}
-            renderItem={showUsers} /> 
+            renderItem={showUsers} />
     );
 };
 
