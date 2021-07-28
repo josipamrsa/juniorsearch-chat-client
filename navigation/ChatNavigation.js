@@ -41,10 +41,10 @@ const MessagedStackNavigation = createStackNavigator({
 const ProfileStackNavigation = createStackNavigator({
     UserProfile: {
         screen: ProfileScreen,
-        navigationOptions: {
-            headerTitle: "User profile"
-        }
     },
+}, {
+    // za slanje inicijalnih parametara određene rute - u ovom slučaju je toggle edit/no edit za profil!
+    initialRouteParams: { editMode: false } 
 });
 
 const userTabScreens = {
@@ -146,7 +146,7 @@ const ChatNavigation = createStackNavigator({
                             // makni aktivnu socket vezu (?)
                             userSignOff();
                             // vrati se na login ekran
-                            navigation.replace("SignIn"); 
+                            navigation.replace("SignIn");
 
                         } catch (e) { console.log(e); }
                     }

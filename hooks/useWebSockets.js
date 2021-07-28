@@ -4,6 +4,7 @@ import { socket } from '../services/socket';
 const USER_VERIFIED = "userVerified";
 const NEW_USER_LOGGED_IN = "newUserLoggedIn";
 const NEW_PRIVATE_MESSAGE = "newPrivateMessage";
+const USER_LOGGED_OUT = "userLoggedOut";
 
 const useWebSockets = () => {
     const socketRef = useRef();
@@ -26,7 +27,12 @@ const useWebSockets = () => {
 
         socketRef.current.on(NEW_PRIVATE_MESSAGE, (incoming) => {
             console.log(`to >> ${socketRef.current.id} >> from >> ${incoming}`);
-        })
+        });
+
+        socketRef.current.on(USER_LOGGED_OUT, (incoming) => {
+            const incomingNotification = { ...incoming };
+            setNotification(incomingNotification);
+        });
 
         return () => { socketRef.current.disconnect(); }
     }, []);
@@ -50,6 +56,9 @@ const useWebSockets = () => {
     }
 
     const userSignOff = () => {
+        socketRef.current.emit(USER_LOGGED_OUT, {
+            socketId: socketRef.current.id
+        });
         socketRef.current.disconnect();
     }
 
