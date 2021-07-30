@@ -33,7 +33,7 @@ const DashboardScreen = (props) => {
                 authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
                     .then((response) => {
                         storeUserData("JuniorChat_userDetail", response);
-                        //console.log(notification);
+                        //console.log(response);
                     });
             })
             .catch((err) => {
@@ -42,7 +42,6 @@ const DashboardScreen = (props) => {
     }, [notification]);
 
     const showUsers = (user) => {
-        //console.log(user);
         return (<UserDetails
             firstName={user.item.firstName}
             lastName={user.item.lastName}
@@ -54,6 +53,7 @@ const DashboardScreen = (props) => {
                 props.navigation.navigate({
                     routeName: "ChatWindow",
                     params: {
+                        loggedPhone: loggedUser.phone,
                         phoneNumber: user.item.phoneNumber,
                         activeConnection: user.item.activeConnection,
                         userFullName: `${user.item.firstName} ${user.item.lastName}`,

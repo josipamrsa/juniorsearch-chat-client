@@ -3,30 +3,34 @@ import { StyleSheet, Text, View } from 'react-native';
 import CircleProfilePicture from './CircleProfilePicture';
 
 const MessageBubble = (props) => {
+    console.log(props);
+
     const authorName = {
-        firstName: props.participants.find(p => p.id === props.author).firstName[0],
-        lastName: props.participants.find(p => p.id === props.author).lastName[0]
+        firstName: props.author.firstName[0],
+        lastName: props.author.lastName[0]
     }
+
+    const isLogged = props.author.phoneNumber === props.logged.phone;
 
     return (
         <View style={bubbleStyle.frame}>
-            <View style={props.author === props.logged ? bubbleStyle.loggedUser : bubbleStyle.otherUser}>
+            <View style={isLogged ? bubbleStyle.loggedUser : bubbleStyle.otherUser}>
                 <CircleProfilePicture
                     firstName={authorName.firstName}
                     lastName={authorName.lastName}
-                    circleSize={props.author === props.logged ? {paddingLeft: 5} : {paddingRight: 5}}
-                    imageSize={{width: 30, height: 30}}
-                    textSize={{fontSize: 10}}
+                    circleSize={isLogged ? { paddingLeft: 5 } : { paddingRight: 5 }}
+                    imageSize={{ width: 30, height: 30 }}
+                    textSize={{ fontSize: 10 }}
                 />
                 <Text
                     style={
-                        props.author === props.logged ?
+                        isLogged ?
                             bubbleStyle.loggedUserText :
                             bubbleStyle.otherUserText
                     }>{props.content}</Text>
             </View>
         </View>
-    )
+    );
 };
 
 const bubbleStyle = StyleSheet.create({
