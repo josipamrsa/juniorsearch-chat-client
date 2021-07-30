@@ -20,7 +20,7 @@ const useWebSockets = () => {
             setUserId(socketRef.current.id);
         });
 
-        socketRef.current.on(NEW_USER_LOGGED_IN, (incoming) => {
+        socketRef.current.once(NEW_USER_LOGGED_IN, (incoming) => {
             const incomingNotification = { ...incoming };
             setNotification(incomingNotification);
         });

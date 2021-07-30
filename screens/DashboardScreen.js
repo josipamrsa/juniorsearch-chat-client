@@ -33,7 +33,7 @@ const DashboardScreen = (props) => {
                 authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
                     .then((response) => {
                         storeUserData("JuniorChat_userDetail", response);
-                        console.log(notification);
+                        //console.log(notification);
                     });
             })
             .catch((err) => {
