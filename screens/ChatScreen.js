@@ -8,8 +8,8 @@ import { useWebSockets } from '../hooks/useWebSockets';
 const ChatScreen = (props) => {
     const currentConversation = CONVERSATIONS.find(c => c.id === "r1");
     const logged = currentConversation.users.find(u => u.id === "1").id;
-    const connect = props.navigation.getParam("connect");
-    connect();
+    //const connect = props.navigation.getParam("connect");
+    //connect();
 
     //console.log(props.navigation);
 

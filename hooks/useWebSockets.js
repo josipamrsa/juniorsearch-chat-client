@@ -20,6 +20,7 @@ const useWebSockets = () => {
             setUserId(socketRef.current.id);
         });
 
+        // za update samo jedanput!
         socketRef.current.once(NEW_USER_LOGGED_IN, (incoming) => {
             const incomingNotification = { ...incoming };
             setNotification(incomingNotification);
