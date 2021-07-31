@@ -3,11 +3,18 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import UserDetails from '../components/UserDetails';
+import useWebSockets from '../hooks/useWebSockets';
 import authService from '../services/authService';
 
 const MessagedDashboardScreen = (props) => {
     const [loggedUser, setLoggedUser] = useState("");
     const [messagedList, setMessagedList] = useState([]);
+
+    const {
+        update,
+        setUpdate,
+        connectToUser,
+    } = useWebSockets();
 
     const readData = async (key) => {
         try {
@@ -19,6 +26,7 @@ const MessagedDashboardScreen = (props) => {
             authService.fetchUserData(parseLogged.phone)
                 .then((response) => {
                     setMessagedList(response.chatted);
+                    console.log(response);
                 }).catch((err) => {
                     console.log(err.response);
                 });
@@ -26,7 +34,7 @@ const MessagedDashboardScreen = (props) => {
     }
 
     useEffect(() => {
-        readData("JuniorChat_user"); // TODO - spremiti pod Constants ove stringove
+        readData("JuniorChat_user");   
     }, []);
 
     const showUsers = (user) => {
@@ -43,7 +51,8 @@ const MessagedDashboardScreen = (props) => {
                         loggedPhone: loggedUser.phone,
                         phoneNumber: user.item.phoneNumber,
                         activeConnection: user.item.activeConnection,
-                        userFullName: `${user.item.firstName} ${user.item.lastName}`
+                        userFullName: `${user.item.firstName} ${user.item.lastName}`,
+                        sendNewMessage: (participant, message) => connectToUser(participant, message)
                     }
                 })
             }}

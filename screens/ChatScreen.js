@@ -13,8 +13,12 @@ const ChatScreen = (props) => {
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
 
-    //const connect = props.navigation.getParam("connect");
-    //connect();
+    //const { notification } = useWebSockets();
+
+    const userOnline = props.navigation.getParam('activeConnection'); // TODO - ako se korisnik ulogira?
+    console.log(props);
+
+    const sendNewMessage = props.navigation.getParam("sendNewMessage");
 
     const users = [
         props.navigation.getParam('loggedPhone'),
@@ -32,7 +36,7 @@ const ChatScreen = (props) => {
 
     useEffect(() => {
         readData("JuniorChat_user");
-        
+
         messagingService.getCurrentConversation(users, loggedUser.token)
             .then((response) => {
                 setCurrentConversation(response);
@@ -56,13 +60,14 @@ const ChatScreen = (props) => {
             author,
             dateSent: new Date()
         }
-        
+
         messagingService.saveMessage(data, loggedUser.token, currentConversation.id)
             .then((response) => {
-                //console.log(response);
                 setContent("");
                 Keyboard.dismiss();
-            }); 
+                // TODO - vratiti jednu poruku (messages.GET prema id iz response)
+                if (userOnline) sendNewMessage(userOnline, data);
+            });
     }
 
     return (

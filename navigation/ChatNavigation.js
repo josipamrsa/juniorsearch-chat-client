@@ -118,7 +118,7 @@ const ChatNavigation = createStackNavigator({
             {
                 headerTitle: "Chat app dashboard",
                 headerRight: () => {
-                    const { userSignOff } = useWebSockets();
+                    const { userSignOff, setUpdate } = useWebSockets();
 
                     const setOffline = async (key) => {
                         try {
@@ -138,7 +138,7 @@ const ChatNavigation = createStackNavigator({
                             // dohvati sve ključeve
                             let keys = await AsyncStorage.getAllKeys();
                             setOffline("JuniorChat_user");
-
+                            //setUpdate(false);
                             // koristi se ovo umjesto clear - https://react-native-async-storage.github.io/async-storage/docs/api#clear
                             await AsyncStorage.multiRemove(
                                 keys.filter(key => key.includes("JuniorChat"))

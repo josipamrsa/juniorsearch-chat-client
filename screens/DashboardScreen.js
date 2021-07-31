@@ -12,8 +12,9 @@ const DashboardScreen = (props) => {
 
     const {
         userVerified,
-        connectToRoom,
-        notification
+        connectToUser,
+        notification,
+        updateStatus
     } = useWebSockets();
 
     const storeUserData = async (key, value) => {
@@ -29,11 +30,9 @@ const DashboardScreen = (props) => {
                 setUserList(response.notChatted);
                 storeUserData("JuniorChat_user", loggedUser); // TODO - spremiti pod Constants ove stringove
                 const socket = userVerified();
-
                 authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
                     .then((response) => {
                         storeUserData("JuniorChat_userDetail", response);
-                        //console.log(response);
                     });
             })
             .catch((err) => {
@@ -57,9 +56,7 @@ const DashboardScreen = (props) => {
                         phoneNumber: user.item.phoneNumber,
                         activeConnection: user.item.activeConnection,
                         userFullName: `${user.item.firstName} ${user.item.lastName}`,
-                        connect: () => user.item.activeConnection ?
-                            connectToRoom(user.item.activeConnection) :
-                            user.item.phoneNumber
+                        sendNewMessage: (participant, message) => connectToUser(participant, message)
                     }
                 })
             }}

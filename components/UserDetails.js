@@ -11,6 +11,7 @@ import CircleProfilePicture from './CircleProfilePicture';
 import OnlineStatus from './OnlineStatus';
 
 const UserDetails = (props) => {
+    console.log(props);
     return (
         <TouchableOpacity onPress={props.startChat}>
             <View style={userDetailsStyle.section}>

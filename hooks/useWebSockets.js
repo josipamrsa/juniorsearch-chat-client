@@ -3,6 +3,7 @@ import { socket } from '../services/socket';
 
 const USER_VERIFIED = "userVerified";
 const NEW_USER_LOGGED_IN = "newUserLoggedIn";
+const UPDATE_USERS_ONLINE_STATUS = "updateUsersOnlineStatus";
 const NEW_PRIVATE_MESSAGE = "newPrivateMessage";
 const USER_LOGGED_OUT = "userLoggedOut";
 
@@ -10,6 +11,8 @@ const useWebSockets = () => {
     const socketRef = useRef();
     const [userId, setUserId] = useState("");
     const [notification, setNotification] = useState("");
+    const [update, setUpdate] = useState(false);
+    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
         // TODO - token!!!!
@@ -26,8 +29,15 @@ const useWebSockets = () => {
             setNotification(incomingNotification);
         });
 
+        socketRef.current.on(UPDATE_USERS_ONLINE_STATUS, () => {
+            setUpdate(true);
+        })
+
         socketRef.current.on(NEW_PRIVATE_MESSAGE, (incoming) => {
-            console.log(`to >> ${socketRef.current.id} >> from >> ${incoming}`);
+            console.log(`to >> ${socketRef.current.id} >> from >> ${incoming.sender}`);
+            console.log(`${incoming.message}`);
+            //const incomingMessage = { ...incoming.message }
+            //setMessages(messages => [...messages, incomingMessage]);
         });
 
         socketRef.current.on(USER_LOGGED_OUT, (incoming) => {
@@ -48,12 +58,19 @@ const useWebSockets = () => {
         return socketRef.current.id;
     }
 
-    const connectToRoom = (participantId) => {
+    const updateStatus = () => {
+        socketRef.current.emit(UPDATE_USERS_ONLINE_STATUS);
+    }
+
+    const connectToUser = (participantId, message) => {
         console.log(`from: ${socketRef.current.id}`);
         console.log(`to: ${participantId}`);
-        socketRef.current.emit(NEW_PRIVATE_MESSAGE, {
-            participant: participantId
-        });
+        const data = {
+            participant: participantId,
+            message
+        };
+
+        socketRef.current.emit(NEW_PRIVATE_MESSAGE, data);
     }
 
     const userSignOff = () => {
@@ -67,8 +84,11 @@ const useWebSockets = () => {
         userId,
         userVerified,
         notification,
+        update,
+        setUpdate,
+        updateStatus,
         userSignOff,
-        connectToRoom
+        connectToUser
     }
 }
 
