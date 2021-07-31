@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Keyboard, StyleSheet, Text, View } from 'react-native';
 import MessageBubble from '../components/MessageBubble';
 import MessageInput from '../components/MessageInput';
 
@@ -10,6 +10,9 @@ import messagingService from '../services/messagingService';
 const ChatScreen = (props) => {
     const [loggedUser, setLoggedUser] = useState("");
     const [currentConversation, setCurrentConversation] = useState([]);
+    const [content, setContent] = useState("");
+    const [author, setAuthor] = useState("");
+
     //const connect = props.navigation.getParam("connect");
     //connect();
 
@@ -23,6 +26,7 @@ const ChatScreen = (props) => {
             const logged = await AsyncStorage.getItem(`@${key}`);
             let parseLogged = JSON.parse(logged);
             setLoggedUser(parseLogged);
+            setAuthor(parseLogged.phone);
         } catch (err) { console.log(err.response); }
     }
 
@@ -31,15 +35,12 @@ const ChatScreen = (props) => {
         
         messagingService.getCurrentConversation(users, loggedUser.token)
             .then((response) => {
-                //console.log(response);
                 setCurrentConversation(response);
-                //console.log(response);
+                //console.log(response.id); //conversation id
             });
     }, []);
 
     const showMessages = (messages) => {
-        //console.log(currentConversation.users);
-        //console.log(messages.item.author);
         return (
             <MessageBubble
                 content={messages.item.content}
@@ -49,12 +50,30 @@ const ChatScreen = (props) => {
         );
     };
 
+    const sendMessage = () => {
+        const data = {
+            content,
+            author,
+            dateSent: new Date()
+        }
+        
+        messagingService.saveMessage(data, loggedUser.token, currentConversation.id)
+            .then((response) => {
+                //console.log(response);
+                setContent("");
+                Keyboard.dismiss();
+            }); 
+    }
+
     return (
         <View style={chatStyle.screen}>
             <FlatList
                 data={currentConversation.messages}
                 renderItem={showMessages} />
-            <MessageInput />
+            <MessageInput
+                content={content}
+                setContent={setContent}
+                sendMessage={sendMessage} />
         </View>
     )
 };

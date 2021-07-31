@@ -1,19 +1,22 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
 import InputComponent from './InputComponent';
+import CustomizableButton from './CustomizableButton';
 
 const MessageInput = (props) => {
+    const checkContent = (data) => props.setContent(data); 
     return (
         <View style={inputStyle.area}>
             <InputComponent
-                description="Write a message..."
+                value={props.content}
+                onChangeText={checkContent}
+                placeholder="Write a message..."
                 inputWidth={{ width: "80%", marginRight: 5 }} />
 
-            <TouchableOpacity
-                style={inputStyle.sendButton}
-                onPress={() => console.log("sent")}>
-                <Text style={inputStyle.sendText}>Send</Text>
-            </TouchableOpacity>
+            <CustomizableButton
+                button={inputStyle.sendButton}
+                description={"Send"}
+                action={props.sendMessage} />
 
         </View>
     )
@@ -27,11 +30,7 @@ const inputStyle = StyleSheet.create({
     },
     sendButton: {
         backgroundColor: "blue",
-        padding: 15,
-        borderRadius: 15
-    },
-    sendText: {
-        color: "white",
+        width: "20%"
     }
 });
 

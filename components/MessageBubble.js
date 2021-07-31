@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import CircleProfilePicture from './CircleProfilePicture';
 
 const MessageBubble = (props) => {
-    console.log(props);
+    //console.log(props);
 
     const authorName = {
         firstName: props.author.firstName[0],
@@ -43,7 +43,7 @@ const bubbleStyle = StyleSheet.create({
     loggedUser: {
         justifyContent: "flex-start",
         alignItems: "flex-end",
-        flexDirection: "row-reverse"
+        flexDirection: "row-reverse",
     },
 
     otherUser: {
@@ -59,7 +59,7 @@ const bubbleStyle = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderBottomRightRadius: 5,
         textAlign: "right",
-        maxWidth: 250
+        maxWidth: 250,
     },
 
     otherUserText: {
@@ -69,7 +69,7 @@ const bubbleStyle = StyleSheet.create({
         borderTopRightRadius: 20,
         borderBottomLeftRadius: 5,
         textAlign: "left",
-        maxWidth: 250
+        maxWidth: 250,
     }
 });
 

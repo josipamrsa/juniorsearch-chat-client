@@ -1,11 +1,22 @@
 import axios from "axios";
 import { USER_URL, CONVERSATION_URL, MESSAGE_URL } from "../constants/Configuration";
 
+const setToken = (token) => {
+    return `bearer ${token}`;
+}
+
 const getCurrentConversation = async (data, token) => {
-    const config = { headers: { Authorization: token } };
+    const config = { headers: { Authorization: setToken(token) } };
     const response = await axios.post(`${CONVERSATION_URL}/open`, data, config)
         .catch(err => { throw err.response });
     return response.data;
 }
 
-export default { getCurrentConversation };
+const saveMessage = async (data, token, id) => {
+    const config = { headers: { Authorization: setToken(token) } };
+    const response = await axios.post(`${MESSAGE_URL}/${id}`, data, config)
+        .catch(err => { throw err.response });
+    return response.data;
+}
+
+export default { getCurrentConversation, saveMessage };
