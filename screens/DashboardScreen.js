@@ -52,11 +52,12 @@ const DashboardScreen = (props) => {
                 props.navigation.navigate({
                     routeName: "ChatWindow",
                     params: {
+                        conversationExists: false,
                         loggedPhone: loggedUser.phone,
                         phoneNumber: user.item.phoneNumber,
                         activeConnection: user.item.activeConnection,
                         userFullName: `${user.item.firstName} ${user.item.lastName}`,
-                        sendNewMessage: (participant, message) => connectToUser(participant, message)
+                        sendNewMessage: (participant, message) => connectToUser(participant, message) // TODO - stvori razgovor prije slanja poruke
                     }
                 })
             }}

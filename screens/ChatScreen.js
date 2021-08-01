@@ -10,7 +10,7 @@ import messagingService from '../services/messagingService';
 const ChatScreen = (props) => {
     const [loggedUser, setLoggedUser] = useState("");
     const [currentConversation, setCurrentConversation] = useState([]);
-    const [convoLength, setConvoLength] = useState(0);
+
 
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
@@ -18,6 +18,7 @@ const ChatScreen = (props) => {
 
     const { notification } = useWebSockets();
 
+    let conversationExists = props.navigation.getParam('conversationExists');
     const userOnline = props.navigation.getParam('activeConnection'); // TODO - ako se korisnik ulogira?
     const sendNewMessage = props.navigation.getParam("sendNewMessage");
 
@@ -38,19 +39,16 @@ const ChatScreen = (props) => {
     useEffect(() => {
         readData("JuniorChat_user");
 
-        messagingService.getCurrentConversation(users, loggedUser.token)
-            .then((response) => {
-                let inverse = response;
-                inverse.messages = inverse.messages.reverse();
+        if (conversationExists) {
+            messagingService.getCurrentConversation(users, loggedUser.token)
+                .then((response) => {
+                    let inverse = response;
+                    inverse.messages = inverse.messages.reverse();
+                    setCurrentConversation(inverse);
+                    setUpdate(false);
+                }).catch((err) => { console.log(err) });
+        }
 
-                setCurrentConversation(inverse);
-                //console.log("abc");
-                //console.log(response.messages.length);
-                //console.log(response.messages.reverse());
-                setUpdate(false);
-            });
-        
-        
     }, [notification, update]);
 
     const showMessages = (messages) => {
@@ -63,6 +61,25 @@ const ChatScreen = (props) => {
         );
     };
 
+    const startConversation = (data, token, users, userOnline) => {
+        messagingService.startNewConversation(users, loggedUser.token)
+            .then((response) => {
+                conversationExists = true;
+                setCurrentConversation(response);
+                newMessage(data, token, response.id, userOnline);
+            })
+    }
+
+    const newMessage = (data, token, convo, userOnline) => {
+        messagingService.saveMessage(data, token, convo)
+            .then((response) => {
+                setContent("");
+                Keyboard.dismiss();
+                if (userOnline) sendNewMessage(userOnline, data);
+                setUpdate(true);
+            });
+    }
+
     const sendMessage = () => {
         const data = {
             content,
@@ -70,15 +87,9 @@ const ChatScreen = (props) => {
             dateSent: new Date()
         }
 
-        messagingService.saveMessage(data, loggedUser.token, currentConversation.id)
-            .then((response) => {
-                setContent("");
-                Keyboard.dismiss();
-                // TODO - vratiti jednu poruku (messages.GET prema id iz response) možda?
-                // TODO - ZALIPAČIT ČET PORUKU OD DRUGOG U OVO 
-                if (userOnline) sendNewMessage(userOnline, data);
-                setUpdate(true);
-            });
+        !conversationExists ?
+            startConversation(data, loggedUser.token, users, userOnline) :
+            newMessage(data, loggedUser.token, currentConversation.id, userOnline);
     }
 
     return (
