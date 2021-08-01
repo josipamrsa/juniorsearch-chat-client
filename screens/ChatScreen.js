@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
+import { FlatList, Keyboard, StyleSheet, View, Text } from 'react-native';
 import MessageBubble from '../components/MessageBubble';
 import MessageInput from '../components/MessageInput';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useWebSockets } from '../hooks/useWebSockets';
+import useWebSockets from '../hooks/useWebSockets';
 import messagingService from '../services/messagingService';
 
 const ChatScreen = (props) => {
     const [loggedUser, setLoggedUser] = useState("");
     const [currentConversation, setCurrentConversation] = useState([]);
+    const [convoLength, setConvoLength] = useState(0);
+
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
+    const [update, setUpdate] = useState(false);
 
-    //const { notification } = useWebSockets();
+    const { notification } = useWebSockets();
 
     const userOnline = props.navigation.getParam('activeConnection'); // TODO - ako se korisnik ulogira?
     const sendNewMessage = props.navigation.getParam("sendNewMessage");
@@ -37,10 +40,18 @@ const ChatScreen = (props) => {
 
         messagingService.getCurrentConversation(users, loggedUser.token)
             .then((response) => {
-                setCurrentConversation(response);
-                //console.log(response.id); //conversation id
+                let inverse = response;
+                inverse.messages = inverse.messages.reverse();
+
+                setCurrentConversation(inverse);
+                //console.log("abc");
+                //console.log(response.messages.length);
+                //console.log(response.messages.reverse());
+                setUpdate(false);
             });
-    }, []);
+        
+        
+    }, [notification, update]);
 
     const showMessages = (messages) => {
         return (
@@ -66,12 +77,14 @@ const ChatScreen = (props) => {
                 // TODO - vratiti jednu poruku (messages.GET prema id iz response) možda?
                 // TODO - ZALIPAČIT ČET PORUKU OD DRUGOG U OVO 
                 if (userOnline) sendNewMessage(userOnline, data);
+                setUpdate(true);
             });
     }
 
     return (
         <View style={chatStyle.screen}>
             <FlatList
+                inverted
                 data={currentConversation.messages}
                 renderItem={showMessages} />
             <MessageInput

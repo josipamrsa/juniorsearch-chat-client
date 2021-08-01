@@ -35,9 +35,11 @@ const useWebSockets = () => {
 
         socketRef.current.on(NEW_PRIVATE_MESSAGE, (incoming) => {
             console.log(`to >> ${socketRef.current.id} >> from >> ${incoming.sender}`);
-            console.log(`${incoming.message}`);
-            //const incomingMessage = { ...incoming.message }
-            //setMessages(messages => [...messages, incomingMessage]);
+            //console.log(`${incoming.message.content}`);
+            /* const incomingMessage = { ...incoming.message }
+            setMessages(messages => [...messages, incomingMessage]); */
+            const incomingMessage = { ...incoming }
+            setNotification(`New message from ${incomingMessage.sender}: ${incomingMessage.message.content}`);
         });
 
         socketRef.current.on(USER_LOGGED_OUT, (incoming) => {
@@ -63,8 +65,8 @@ const useWebSockets = () => {
     }
 
     const connectToUser = (participantId, message) => {
-        console.log(`from: ${socketRef.current.id}`);
-        console.log(`to: ${participantId}`);
+        /* console.log(`from: ${socketRef.current.id}`);
+        console.log(`to: ${participantId}`); */
         const data = {
             participant: participantId,
             message
