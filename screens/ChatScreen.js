@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Keyboard, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import MessageBubble from '../components/MessageBubble';
 import MessageInput from '../components/MessageInput';
 
@@ -16,8 +16,6 @@ const ChatScreen = (props) => {
     //const { notification } = useWebSockets();
 
     const userOnline = props.navigation.getParam('activeConnection'); // TODO - ako se korisnik ulogira?
-    console.log(props);
-
     const sendNewMessage = props.navigation.getParam("sendNewMessage");
 
     const users = [
@@ -65,7 +63,8 @@ const ChatScreen = (props) => {
             .then((response) => {
                 setContent("");
                 Keyboard.dismiss();
-                // TODO - vratiti jednu poruku (messages.GET prema id iz response)
+                // TODO - vratiti jednu poruku (messages.GET prema id iz response) možda?
+                // TODO - ZALIPAČIT ČET PORUKU OD DRUGOG U OVO 
                 if (userOnline) sendNewMessage(userOnline, data);
             });
     }

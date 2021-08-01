@@ -60,7 +60,6 @@ const DashboardScreen = (props) => {
                     }
                 })
             }}
-            picture={""}
         />);
     }
 

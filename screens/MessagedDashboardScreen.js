@@ -11,8 +11,7 @@ const MessagedDashboardScreen = (props) => {
     const [messagedList, setMessagedList] = useState([]);
 
     const {
-        update,
-        setUpdate,
+        notification,
         connectToUser,
     } = useWebSockets();
 
@@ -26,7 +25,6 @@ const MessagedDashboardScreen = (props) => {
             authService.fetchUserData(parseLogged.phone)
                 .then((response) => {
                     setMessagedList(response.chatted);
-                    console.log(response);
                 }).catch((err) => {
                     console.log(err.response);
                 });
@@ -34,8 +32,8 @@ const MessagedDashboardScreen = (props) => {
     }
 
     useEffect(() => {
-        readData("JuniorChat_user");   
-    }, []);
+        readData("JuniorChat_user");
+    }, [notification]);
 
     const showUsers = (user) => {
         return (<UserDetails
@@ -56,7 +54,6 @@ const MessagedDashboardScreen = (props) => {
                     }
                 })
             }}
-            picture={""}
         />);
     }
 
