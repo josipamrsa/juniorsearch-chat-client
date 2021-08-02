@@ -10,7 +10,6 @@ export default function App() {
 
   return (
     <View style={styles.screen}>
-      {/* TODO - navigacija */}
       <ChatNavigation />
     </View>
   );

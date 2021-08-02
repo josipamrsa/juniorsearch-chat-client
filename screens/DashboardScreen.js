@@ -24,6 +24,7 @@ const DashboardScreen = (props) => {
     }
 
     useEffect(() => {
+        // TODO - update za micanje korisnika iz ove liste nakon slanja prve poruke
         authService.setToken(loggedUser.token);
         authService.fetchUserData(loggedUser.phone)
             .then((response) => {
@@ -57,7 +58,7 @@ const DashboardScreen = (props) => {
                         phoneNumber: user.item.phoneNumber,
                         activeConnection: user.item.activeConnection,
                         userFullName: `${user.item.firstName} ${user.item.lastName}`,
-                        sendNewMessage: (participant, message) => connectToUser(participant, message) // TODO - stvori razgovor prije slanja poruke
+                        sendNewMessage: (participant, message) => connectToUser(participant, message) 
                     }
                 })
             }}

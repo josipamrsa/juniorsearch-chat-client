@@ -5,6 +5,15 @@ const setToken = (token) => {
     return `bearer ${token}`;
 }
 
+const deleteConversation = async (userList, token, convo) => {
+    //const config = { headers: { Authorization: setToken(token) } };
+    const response = await axios.delete(`${CONVERSATION_URL}/${convo}`, {
+        headers: { Authorization: setToken(token) },
+        data: { users: userList }
+    }).catch((err) => { throw err.response });
+    return response;
+}
+
 const getCurrentConversation = async (data, token) => {
     const config = { headers: { Authorization: setToken(token) } };
     const response = await axios.post(`${CONVERSATION_URL}/open`, data, config)
@@ -27,8 +36,8 @@ const saveMessage = async (data, token, id) => {
 }
 
 const testCall = async () => {
-    const response = await axios.get(`${CONVERSATION_URL}`).catch(err=>{ throw err.response; });
+    const response = await axios.get(`${CONVERSATION_URL}`).catch(err => { throw err.response; });
     return response.data;
 }
 
-export default { getCurrentConversation, startNewConversation, saveMessage, testCall };
+export default { deleteConversation, getCurrentConversation, startNewConversation, saveMessage, testCall };

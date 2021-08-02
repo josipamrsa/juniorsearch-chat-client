@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import UserDetails from '../components/UserDetails';
 import useWebSockets from '../hooks/useWebSockets';
 import authService from '../services/authService';
+import messagingService from '../services/messagingService';
 
 const MessagedDashboardScreen = (props) => {
     const [loggedUser, setLoggedUser] = useState("");
@@ -31,6 +32,31 @@ const MessagedDashboardScreen = (props) => {
         } catch (err) { console.log(err.response); }
     }
 
+    const deleteConversation = (users, token) => {
+        console.log(users);
+        Alert.alert("Delete conversation", "Are you sure you want to delete this conversation? Conversation will be deleted for both participants!", [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+            },
+            {
+                text: 'OK',
+                onPress: () => deletePress(users, token)
+            }],
+            { cancelable: false }
+        );
+
+        const deletePress = (u, t) => {
+            messagingService.getCurrentConversation(u, t).then((response) => {
+                const c = response.id;
+                messagingService.deleteConversation(u, t, c)
+                    .then((response) => {
+                        console.log("Conversation deleted...");
+                    }).catch(err => console.log(err));
+            }).catch(err => console.log(err));
+        }
+    }
+
     useEffect(() => {
         readData("JuniorChat_user");
     }, [notification]);
@@ -43,6 +69,10 @@ const MessagedDashboardScreen = (props) => {
             residence={user.item.currentResidence}
             phoneNumber={user.item.phoneNumber}
             onlineStatus={user.item.activeConnection}
+            delete={() => {
+                let users = [loggedUser.phone, user.item.phoneNumber];
+                deleteConversation(users, loggedUser.token);
+            }}
             startChat={() => {
                 props.navigation.navigate({
                     routeName: "ChatWindow",

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Keyboard, StyleSheet, View, Text } from 'react-native';
+import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import MessageBubble from '../components/MessageBubble';
 import MessageInput from '../components/MessageInput';
 
@@ -10,7 +10,6 @@ import messagingService from '../services/messagingService';
 const ChatScreen = (props) => {
     const [loggedUser, setLoggedUser] = useState("");
     const [currentConversation, setCurrentConversation] = useState([]);
-
 
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
@@ -36,6 +35,7 @@ const ChatScreen = (props) => {
         } catch (err) { console.log(err.response); }
     }
 
+    // TODO - update za micanje korisnika iz ove liste nakon slanja prve poruke
     useEffect(() => {
         readData("JuniorChat_user");
 

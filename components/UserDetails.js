@@ -12,7 +12,7 @@ import OnlineStatus from './OnlineStatus';
 
 const UserDetails = (props) => {
     return (
-        <TouchableOpacity onPress={props.startChat}>
+        <TouchableOpacity onPress={props.startChat} onLongPress={props.delete}>
             <View style={userDetailsStyle.section}>
 
                 {/* TODO - ne znam hoće li ostati, lijeno mi je radit slike */}
