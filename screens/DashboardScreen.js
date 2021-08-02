@@ -13,8 +13,7 @@ const DashboardScreen = (props) => {
     const {
         userVerified,
         connectToUser,
-        notification,
-        updateStatus
+        notification
     } = useWebSockets();
 
     const storeUserData = async (key, value) => {
@@ -39,7 +38,7 @@ const DashboardScreen = (props) => {
             .catch((err) => {
                 //console.log(err.response)
             });
-    }, [notification]);
+    }, [notification, loggedUser]);
 
     const showUsers = (user) => {
         return (<UserDetails

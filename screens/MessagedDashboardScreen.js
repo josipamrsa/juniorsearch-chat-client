@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { NavigationActions } from 'react-navigation'; // za ugniježđenu navigaciju
+
 import UserDetails from '../components/UserDetails';
 import useWebSockets from '../hooks/useWebSockets';
 import authService from '../services/authService';
@@ -52,6 +54,16 @@ const MessagedDashboardScreen = (props) => {
                 messagingService.deleteConversation(u, t, c)
                     .then((response) => {
                         console.log("Conversation deleted...");
+                        setMessagedList(messagedList.filter(m => !u.includes(m.phoneNumber)))
+                        props.navigation.navigate("Dashboard",
+                            {},
+                            NavigationActions.navigate({
+                                routeName: 'PrivateMessaging',
+                                params: {
+                                    user: loggedUser
+                                }
+                            })
+                        );
                     }).catch(err => console.log(err));
             }).catch(err => console.log(err));
         }
