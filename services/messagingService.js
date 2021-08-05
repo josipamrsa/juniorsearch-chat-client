@@ -35,9 +35,9 @@ const saveMessage = async (data, token, id) => {
     return response.data;
 }
 
-const testCall = async () => {
+const refreshScreen = async () => {
     const response = await axios.get(`${CONVERSATION_URL}`).catch(err => { throw err.response; });
     return response.data;
 }
 
-export default { deleteConversation, getCurrentConversation, startNewConversation, saveMessage, testCall };
+export default { deleteConversation, getCurrentConversation, startNewConversation, saveMessage,  refreshScreen };

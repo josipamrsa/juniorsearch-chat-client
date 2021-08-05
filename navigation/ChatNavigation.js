@@ -44,7 +44,9 @@ const ProfileStackNavigation = createStackNavigator({
     },
 }, {
     // za slanje inicijalnih parametara određene rute - u ovom slučaju je toggle edit/no edit za profil!
-    initialRouteParams: { editMode: false } 
+    initialRouteParams: {
+        editMode: false
+    }
 });
 
 const userTabScreens = {
@@ -73,7 +75,7 @@ const userTabScreens = {
                 return (<Ionicons name={"chatbubble-ellipses"} size={25} color={tabInfo.tintColor} />)
             }
         }
-    }
+    },
 }
 
 const signInTabScreens = {
@@ -118,7 +120,7 @@ const ChatNavigation = createStackNavigator({
             {
                 headerTitle: "Chat app dashboard",
                 headerRight: () => {
-                    const { userSignOff, setUpdate } = useWebSockets();
+                    const { userSignOff } = useWebSockets();
 
                     const setOffline = async (key) => {
                         try {
@@ -127,7 +129,7 @@ const ChatNavigation = createStackNavigator({
 
                             authService.setOnlineStatus(parseLogged.phone, { onlineTag: false })
                                 .then((response) => {
-                                    console.log(response);
+                                    //console.log(response);
                                 }).catch(err => console.log(err));
                         } catch (err) { console.log(err); }
                     }

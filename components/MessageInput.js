@@ -17,7 +17,6 @@ const MessageInput = (props) => {
                 button={inputStyle.sendButton}
                 description={"Send"}
                 action={props.sendMessage} />
-
         </View>
     )
 };

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Keyboard, StyleSheet, View, Alert } from 'react-native';
+import { FlatList, Keyboard, StyleSheet, View, Text } from 'react-native';
 import MessageBubble from '../components/MessageBubble';
 import MessageInput from '../components/MessageInput';
-
-import { NavigationActions } from 'react-navigation'; // za ugniježđenu navigaciju
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useWebSockets from '../hooks/useWebSockets';
@@ -12,6 +10,7 @@ import messagingService from '../services/messagingService';
 const ChatScreen = (props) => {
     const [loggedUser, setLoggedUser] = useState("");
     const [currentConversation, setCurrentConversation] = useState([]);
+    //console.log(props.navigation);
 
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
@@ -19,7 +18,6 @@ const ChatScreen = (props) => {
 
     const { notification } = useWebSockets();
 
-    let conversationExists = props.navigation.getParam('conversationExists');
     const userOnline = props.navigation.getParam('activeConnection'); // TODO - ako se korisnik ulogira?
     const sendNewMessage = props.navigation.getParam("sendNewMessage");
 
@@ -37,37 +35,18 @@ const ChatScreen = (props) => {
         } catch (err) { console.log(err.response); }
     }
 
-    const confirmStartConversation = (data, token, users, userOnline) => {
-        Alert.alert("Start conversation", "This action will start a new conversation - continue?", [
-            {
-                text: 'Cancel',
-                onPress: () => {
-                    console.log("Cancelled...");
-                },
-            },
-            {
-                text: 'OK',
-                onPress: () => {
-                    startConversation(data, token, users, userOnline)
-                }
-            }],
-            { cancelable: false }
-        );
-    }
-
     // TODO - update za micanje korisnika iz ove liste nakon slanja prve poruke
     useEffect(() => {
         readData("JuniorChat_user");
 
-        if (conversationExists) {
-            messagingService.getCurrentConversation(users, loggedUser.token)
-                .then((response) => {
-                    let inverse = response;
-                    inverse.messages = inverse.messages.reverse();
-                    setCurrentConversation(inverse);
-                    setUpdate(false);
-                }).catch((err) => { console.log(err) });
-        }
+        messagingService.getCurrentConversation(users, loggedUser.token)
+            .then((response) => {
+                let inverse = response;
+                inverse.messages = inverse.messages.reverse();
+                setCurrentConversation(inverse);
+                setUpdate(false);
+            })
+            .catch((err) => { console.log(err) });
 
     }, [notification, update]);
 
@@ -81,36 +60,6 @@ const ChatScreen = (props) => {
         );
     };
 
-    const startConversation = (data, token, users, userOnline) => {
-        messagingService.startNewConversation(users, loggedUser.token)
-            .then((response) => {
-                conversationExists = true;
-                setCurrentConversation(response);
-                newMessage(data, token, response.id, userOnline, true);
-            }).catch(err => console.log(err));
-    }
-
-    const newMessage = (data, token, convo, userOnline, reload) => {
-        messagingService.saveMessage(data, token, convo)
-            .then((response) => {
-                setContent("");
-                Keyboard.dismiss();
-                if (userOnline) sendNewMessage(userOnline, data);
-                setUpdate(true);
-                if (reload) {
-                    props.navigation.navigate("Dashboard",
-                        {},
-                        NavigationActions.navigate({
-                            routeName: 'PrivateMessaging',
-                            params: {
-                                user: loggedUser
-                            }
-                        })
-                    );
-                }
-            }).catch(err => console.log(err));
-    }
-
     const sendMessage = () => {
         const data = {
             content,
@@ -118,9 +67,13 @@ const ChatScreen = (props) => {
             dateSent: new Date()
         }
 
-        !conversationExists ?
-            confirmStartConversation(data, loggedUser.token, users, userOnline) :
-            newMessage(data, loggedUser.token, currentConversation.id, userOnline, false);
+        messagingService.saveMessage(data, loggedUser.token, currentConversation.id)
+            .then((response) => {
+                setContent("");
+                setUpdate(true);
+                Keyboard.dismiss();
+                if (userOnline) sendNewMessage(userOnline, data);
+            }).catch(err => console.log(err));
     }
 
     return (
@@ -152,4 +105,3 @@ const chatStyle = StyleSheet.create({
 });
 
 export default ChatScreen;
-

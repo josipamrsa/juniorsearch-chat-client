@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { StyleSheet, FlatList, Alert, View, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationEvents } from 'react-navigation';
+
+import useWebSockets from '../hooks/useWebSockets';
+
+import authService from '../services/authService';
+import messagingService from '../services/messagingService';
 
 import UserDetails from '../components/UserDetails';
-import useWebSockets from '../hooks/useWebSockets';
-import authService from '../services/authService';
+import StartConversationModal from '../components/StartConversationModal';
 
 const DashboardScreen = (props) => {
     const loggedUser = props.navigation.getParam("user");
+    
+    const [update, setUpdate] = useState(false);
     const [userList, setUserList] = useState([]);
+    const [startConvo, setStartConvo] = useState(false);
+    const [selected, setSelected] = useState("");
 
     const {
         userVerified,
@@ -22,13 +31,14 @@ const DashboardScreen = (props) => {
         } catch (err) { }
     }
 
-    useEffect(() => {
-        // TODO - update za micanje korisnika iz ove liste nakon slanja prve poruke
+    const loadUserData = () => {
+        // TODO - update za brisanje razgovora i update na ovoj listi i obrnuto
         authService.setToken(loggedUser.token);
         authService.fetchUserData(loggedUser.phone)
             .then((response) => {
                 setUserList(response.notChatted);
                 storeUserData("JuniorChat_user", loggedUser); // TODO - spremiti pod Constants ove stringove
+
                 const socket = userVerified();
                 authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
                     .then((response) => {
@@ -36,9 +46,14 @@ const DashboardScreen = (props) => {
                     });
             })
             .catch((err) => {
-                //console.log(err.response)
+                console.log(err.response)
             });
-    }, [notification, loggedUser]);
+    }
+
+    useEffect(() => {
+        loadUserData();
+        setUpdate(false);
+    }, [notification, update]);
 
     const showUsers = (user) => {
         return (<UserDetails
@@ -49,25 +64,34 @@ const DashboardScreen = (props) => {
             phoneNumber={user.item.phoneNumber}
             onlineStatus={user.item.activeConnection}
             startChat={() => {
-                props.navigation.navigate({
-                    routeName: "ChatWindow",
-                    params: {
-                        conversationExists: false,
-                        loggedPhone: loggedUser.phone,
-                        phoneNumber: user.item.phoneNumber,
-                        activeConnection: user.item.activeConnection,
-                        userFullName: `${user.item.firstName} ${user.item.lastName}`,
-                        sendNewMessage: (participant, message) => connectToUser(participant, message) 
-                    }
-                })
+                setSelected(user.item);
+                setStartConvo(true);
             }}
         />);
     }
 
     return (
-        <FlatList
-            data={userList}
-            renderItem={showUsers} />
+        <View>
+            <NavigationEvents onWillFocus={
+                /* FALA BOGU ISUSU KRISTU I DUHU SVETOM I SVIM APOSTOLIMA I SVIM SVECIMA SKUPA OVO KONACNO RADI */
+                (payload) => { setUpdate(true); } } /> 
+
+            <StartConversationModal
+                visible={startConvo}
+                setVisible={setStartConvo}
+                selected={selected}
+                logged={loggedUser}
+                userList={userList}
+                startNewConvo={messagingService.startNewConversation}
+                setUserList={setUserList}
+                setUpdate={setUpdate}
+                connect={connectToUser} />
+
+            <FlatList
+                data={userList}
+                renderItem={showUsers} />
+        </View>
+
     );
 };
 

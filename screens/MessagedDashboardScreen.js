@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, Alert } from 'react-native';
+import { StyleSheet, FlatList, Alert, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { NavigationActions } from 'react-navigation'; // za ugniježđenu navigaciju
+import { NavigationEvents } from 'react-navigation';
 
 import UserDetails from '../components/UserDetails';
+
 import useWebSockets from '../hooks/useWebSockets';
+
 import authService from '../services/authService';
 import messagingService from '../services/messagingService';
 
+
 const MessagedDashboardScreen = (props) => {
+    const [update, setUpdate] = useState(false);
     const [loggedUser, setLoggedUser] = useState("");
     const [messagedList, setMessagedList] = useState([]);
 
     const {
         notification,
-        connectToUser,
+        connectToUser
     } = useWebSockets();
 
-    const readData = async (key) => {
+    const readUserData = async (key) => {
         try {
             const logged = await AsyncStorage.getItem(`@${key}`);
             let parseLogged = JSON.parse(logged);
@@ -28,6 +31,7 @@ const MessagedDashboardScreen = (props) => {
             authService.fetchUserData(parseLogged.phone)
                 .then((response) => {
                     setMessagedList(response.chatted);
+
                 }).catch((err) => {
                     console.log(err.response);
                 });
@@ -35,16 +39,18 @@ const MessagedDashboardScreen = (props) => {
     }
 
     const deleteConversation = (users, token) => {
-        console.log(users);
-        Alert.alert("Delete conversation", "Are you sure you want to delete this conversation? Conversation will be deleted for both participants!", [
-            {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-            },
-            {
-                text: 'OK',
-                onPress: () => deletePress(users, token)
-            }],
+        Alert.alert(
+            "Delete conversation",
+            "Are you sure you want to delete this conversation? Conversation will be deleted for both participants!",
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                },
+                {
+                    text: 'OK',
+                    onPress: () => deletePress(users, token)
+                }],
             { cancelable: false }
         );
 
@@ -53,25 +59,16 @@ const MessagedDashboardScreen = (props) => {
                 const c = response.id;
                 messagingService.deleteConversation(u, t, c)
                     .then((response) => {
-                        console.log("Conversation deleted...");
-                        setMessagedList(messagedList.filter(m => !u.includes(m.phoneNumber)))
-                        props.navigation.navigate("Dashboard",
-                            {},
-                            NavigationActions.navigate({
-                                routeName: 'PrivateMessaging',
-                                params: {
-                                    user: loggedUser
-                                }
-                            })
-                        );
+                        setMessagedList(messagedList.filter(m => !u.includes(m.phoneNumber)));
                     }).catch(err => console.log(err));
             }).catch(err => console.log(err));
         }
     }
 
     useEffect(() => {
-        readData("JuniorChat_user");
-    }, [notification]);
+        readUserData("JuniorChat_user");
+        setUpdate(false);
+    }, [notification, update]);
 
     const showUsers = (user) => {
         return (<UserDetails
@@ -89,7 +86,7 @@ const MessagedDashboardScreen = (props) => {
                 props.navigation.navigate({
                     routeName: "ChatWindow",
                     params: {
-                        conversationExists: true,
+                        currentConversation: "",
                         loggedPhone: loggedUser.phone,
                         phoneNumber: user.item.phoneNumber,
                         activeConnection: user.item.activeConnection,
@@ -102,9 +99,14 @@ const MessagedDashboardScreen = (props) => {
     }
 
     return (
-        <FlatList
-            data={messagedList}
-            renderItem={showUsers} />
+        <View>
+            <NavigationEvents onWillFocus={
+                /* FALA BOGU ISUSU KRISTU I DUHU SVETOM I SVIM APOSTOLIMA I SVIM SVECIMA SKUPA OVO KONACNO RADI */
+                (payload) => { setUpdate(true); } } />
+            <FlatList
+                data={messagedList}
+                renderItem={showUsers} />
+        </View>
     );
 };
 

@@ -2,11 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
-    Text,
     View,
-    TextInput,
-    Button,
-    TouchableOpacity,
     TouchableWithoutFeedback,
     Keyboard,
     Alert
@@ -25,14 +21,12 @@ const LoginScreen = (props) => {
     const [pass, setPassword] = useState("jopica4");
 
     const checkEmail = (data) => setEmail(data); 
-
     const checkPassword = (data) => setPassword(data);
 
     const signInUser = async () => {
         try {
             const signedIn = await signInService.signIn({ email, pass });
-            //console.log(signedIn);
-
+            
             setEmail('');
             setPassword('');
 

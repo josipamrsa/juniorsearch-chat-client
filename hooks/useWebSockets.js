@@ -3,6 +3,7 @@ import { socket } from '../services/socket';
 
 const USER_VERIFIED = "userVerified";
 const NEW_USER_LOGGED_IN = "newUserLoggedIn";
+const DATA_UPDATE_AVAILABLE = "dataUpdateAvailable";
 const NEW_CONVERSATION_STARTED = "newConversationStarted";
 const NEW_PRIVATE_MESSAGE = "newPrivateMessage";
 const USER_LOGGED_OUT = "userLoggedOut";
@@ -11,6 +12,7 @@ const useWebSockets = () => {
     const socketRef = useRef();
     const [userId, setUserId] = useState("");
     const [notification, setNotification] = useState("");
+    const [update, setUpdate] = useState(false);
     
     useEffect(() => {
         // TODO - token!!!!
@@ -27,13 +29,19 @@ const useWebSockets = () => {
             setNotification(incomingNotification);
         });
 
+        socketRef.current.on(DATA_UPDATE_AVAILABLE, (incoming) => {
+            const id = { ...incoming };
+            setUpdate(`updating data for ${id}`);
+        });
+
         socketRef.current.on(NEW_CONVERSATION_STARTED, (incoming) => {
+            //console.log(`CONVERSATION: TO USER >> ${socketRef.current.id} >> FROM USER >> ${incoming.sender}`);
             const incomingNotification = { ...incoming };
             setNotification(`User ${incomingNotification.sender} has started a conversation with you.`);
         })
 
         socketRef.current.on(NEW_PRIVATE_MESSAGE, (incoming) => {
-            console.log(`to >> ${socketRef.current.id} >> from >> ${incoming.sender}`);
+            //console.log(`MESSAGE: TO USER >> ${socketRef.current.id} >> FROM USER >> ${incoming.sender}`);
             const incomingMessage = { ...incoming }
             setNotification(`New message from ${incomingMessage.sender}: ${incomingMessage.message.content}`);
         });
@@ -49,6 +57,10 @@ const useWebSockets = () => {
     //----METODE----//
     // Postavljanje Socketa kada je korisnik verificiran u bazu
     // kao aktivni socket - TODO
+    const updateData = () => {
+        socketRef.current.emit(DATA_UPDATE_AVAILABLE, socketRef.current.id);
+    }
+
     const userVerified = () => {
         socketRef.current.emit(USER_VERIFIED, {
             socketId: socketRef.current.id
@@ -56,7 +68,11 @@ const useWebSockets = () => {
         return socketRef.current.id;
     }
 
-    const conversationStarted = () => {
+    const conversationStarted = (participantId) => {
+        //console.log("STARTED CONVERSATION");
+        //console.log("From: " + socketRef.current.id);
+        //console.log("To: " + participantId);
+
         const data = {
             participant: participantId,
         };
@@ -65,6 +81,10 @@ const useWebSockets = () => {
     }
 
     const connectToUser = (participantId, message) => {
+        //console.log("PRIVATE MESSAGE");
+        //console.log("From: " + socketRef.current.id);
+        //console.log("To: " + participantId);
+
         const data = {
             participant: participantId,
             message
@@ -86,7 +106,10 @@ const useWebSockets = () => {
         notification,
         conversationStarted,
         userSignOff,
-        connectToUser
+        connectToUser,
+        updateData,
+        update,
+        setUpdate
     }
 }
 
