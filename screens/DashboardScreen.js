@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, FlatList, Alert, View, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationEvents } from 'react-navigation';
@@ -11,9 +11,10 @@ import messagingService from '../services/messagingService';
 import UserDetails from '../components/UserDetails';
 import StartConversationModal from '../components/StartConversationModal';
 
+
 const DashboardScreen = (props) => {
     const loggedUser = props.navigation.getParam("user");
-    
+
     const [update, setUpdate] = useState(false);
     const [userList, setUserList] = useState([]);
     const [startConvo, setStartConvo] = useState(false);
@@ -32,18 +33,21 @@ const DashboardScreen = (props) => {
     }
 
     const loadUserData = () => {
-        // TODO - update za brisanje razgovora i update na ovoj listi i obrnuto
         authService.setToken(loggedUser.token);
         authService.fetchUserData(loggedUser.phone)
             .then((response) => {
                 setUserList(response.notChatted);
                 storeUserData("JuniorChat_user", loggedUser); // TODO - spremiti pod Constants ove stringove
 
-                const socket = userVerified();
-                authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
-                    .then((response) => {
-                        storeUserData("JuniorChat_userDetail", response);
-                    });
+                // ovo bi moglo izazvati probleme kod osvježavanja veze (reload ili nepredvidljivi element možda...)
+                if (!response.activeConnection) {
+                    let socket = userVerified();
+
+                    authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
+                        .then((response) => {
+                            storeUserData("JuniorChat_userDetail", response);
+                        });
+                }  
             })
             .catch((err) => {
                 console.log(err.response)
@@ -74,7 +78,7 @@ const DashboardScreen = (props) => {
         <View>
             <NavigationEvents onWillFocus={
                 /* FALA BOGU ISUSU KRISTU I DUHU SVETOM I SVIM APOSTOLIMA I SVIM SVECIMA SKUPA OVO KONACNO RADI */
-                (payload) => { setUpdate(true); } } /> 
+                (payload) => { setUpdate(true); }} />
 
             <StartConversationModal
                 visible={startConvo}

@@ -27,12 +27,6 @@ const ProfileScreen = (props) => {
 
     return (
         <View style={profStyle.screen}>
-            {/* <Text>Ime i prezime: {userData.firstName} {userData.lastName}</Text>
-            <Text>Lokacija {userData.currentResidence}</Text>
-            <Text>Broj telefona: {userData.phoneNumber}</Text>
-            <Text>Email adresa: {userData.email}</Text> */}
-
-
             {editMode ?
                 <View>
                     <Text>Edit mode!</Text>

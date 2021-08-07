@@ -35,7 +35,6 @@ const ChatScreen = (props) => {
         } catch (err) { console.log(err.response); }
     }
 
-    // TODO - update za micanje korisnika iz ove liste nakon slanja prve poruke
     useEffect(() => {
         readData("JuniorChat_user");
 

@@ -3,7 +3,6 @@ import { socket } from '../services/socket';
 
 const USER_VERIFIED = "userVerified";
 const NEW_USER_LOGGED_IN = "newUserLoggedIn";
-const DATA_UPDATE_AVAILABLE = "dataUpdateAvailable";
 const NEW_CONVERSATION_STARTED = "newConversationStarted";
 const NEW_PRIVATE_MESSAGE = "newPrivateMessage";
 const USER_LOGGED_OUT = "userLoggedOut";
@@ -12,7 +11,6 @@ const useWebSockets = () => {
     const socketRef = useRef();
     const [userId, setUserId] = useState("");
     const [notification, setNotification] = useState("");
-    const [update, setUpdate] = useState(false);
     
     useEffect(() => {
         // TODO - token!!!!
@@ -27,11 +25,6 @@ const useWebSockets = () => {
         socketRef.current.once(NEW_USER_LOGGED_IN, (incoming) => {
             const incomingNotification = { ...incoming };
             setNotification(incomingNotification);
-        });
-
-        socketRef.current.on(DATA_UPDATE_AVAILABLE, (incoming) => {
-            const id = { ...incoming };
-            setUpdate(`updating data for ${id}`);
         });
 
         socketRef.current.on(NEW_CONVERSATION_STARTED, (incoming) => {
@@ -56,15 +49,12 @@ const useWebSockets = () => {
 
     //----METODE----//
     // Postavljanje Socketa kada je korisnik verificiran u bazu
-    // kao aktivni socket - TODO
-    const updateData = () => {
-        socketRef.current.emit(DATA_UPDATE_AVAILABLE, socketRef.current.id);
-    }
-
+    // kao aktivni socket
     const userVerified = () => {
         socketRef.current.emit(USER_VERIFIED, {
             socketId: socketRef.current.id
         });
+        
         return socketRef.current.id;
     }
 
@@ -94,9 +84,6 @@ const useWebSockets = () => {
     }
 
     const userSignOff = () => {
-        socketRef.current.emit(USER_LOGGED_OUT, {
-            socketId: socketRef.current.id
-        });
         socketRef.current.disconnect();
     }
 
@@ -106,10 +93,7 @@ const useWebSockets = () => {
         notification,
         conversationStarted,
         userSignOff,
-        connectToUser,
-        updateData,
-        update,
-        setUpdate
+        connectToUser
     }
 }
 

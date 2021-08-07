@@ -10,7 +10,6 @@ import useWebSockets from '../hooks/useWebSockets';
 import authService from '../services/authService';
 import messagingService from '../services/messagingService';
 
-
 const MessagedDashboardScreen = (props) => {
     const [update, setUpdate] = useState(false);
     const [loggedUser, setLoggedUser] = useState("");
