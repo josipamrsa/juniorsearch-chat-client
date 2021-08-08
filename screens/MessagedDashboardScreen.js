@@ -6,6 +6,7 @@ import { NavigationEvents } from 'react-navigation';
 import UserDetails from '../components/UserDetails';
 
 import useWebSockets from '../hooks/useWebSockets';
+import useExpoPushNotifications from '../hooks/useExpoPushNotifications';
 
 import authService from '../services/authService';
 import messagingService from '../services/messagingService';
@@ -17,8 +18,14 @@ const MessagedDashboardScreen = (props) => {
 
     const {
         notification,
-        connectToUser
+        connectToUser,
+        conversationDeleted
     } = useWebSockets();
+
+    const {
+        sendPushNotification,
+        expoPushToken
+    } = useExpoPushNotifications();
 
     const readUserData = async (key) => {
         try {
@@ -58,7 +65,9 @@ const MessagedDashboardScreen = (props) => {
                 const c = response.id;
                 messagingService.deleteConversation(u, t, c)
                     .then((response) => {
+                        // TODO - obavijest o brisanju
                         setMessagedList(messagedList.filter(m => !u.includes(m.phoneNumber)));
+                        conversationDeleted();
                     }).catch(err => console.log(err));
             }).catch(err => console.log(err));
         }
@@ -67,6 +76,8 @@ const MessagedDashboardScreen = (props) => {
     useEffect(() => {
         readUserData("JuniorChat_user");
         setUpdate(false);
+        if (!notification.noPush) 
+            sendPushNotification(expoPushToken, notification);
     }, [notification, update]);
 
     const showUsers = (user) => {

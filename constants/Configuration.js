@@ -15,3 +15,5 @@ export const USER_URL = `${BASE_ROUTE}/api/users`;
 export const MESSAGE_URL = `${BASE_ROUTE}/api/message`;
 export const CONVERSATION_URL = `${BASE_ROUTE}/api/convo`;
 
+//----EXPO PUSH----//
+export const EXPO_PUSH_URL = 'https://exp.host/--/api/v2/push/send';

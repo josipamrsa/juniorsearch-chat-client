@@ -14,26 +14,10 @@ const StartConversationModal = (props) => {
     const startConversation = () => {
         props.startNewConvo(users, loggedUser.token)
             .then((response) => {
+                // TODO - obavijest o početku razgovora
                 props.setUserList(props.userList.filter(u => u.id !== selectedUser.id));
+                props.startedConversation();
             }).catch(err => console.log(err));
-    }
-
-    const startChat = (navigation) => {
-        /* navigation.navigate({
-            routeName: "ChatWindow",
-            params: {
-                currentConversation: currentConversation,
-                loggedPhone: loggedUser.phone,
-                phoneNumber: selectedUser.phoneNumber,
-                activeConnection: selectedUser.activeConnection,
-                userFullName: `${selectedUser.firstName} ${selectedUser.lastName}`,
-                sendNewMessage: (participant, message) => props.connect(participant, message)
-            }
-        }) */
-
-        navigation.navigate("Dashboard",
-            {},
-            NavigationActions.navigate({ routeName: 'MessagedUsers', }));
     }
 
     return (

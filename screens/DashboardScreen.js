@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationEvents } from 'react-navigation';
 
 import useWebSockets from '../hooks/useWebSockets';
+import useExpoPushNotifications from '../hooks/useExpoPushNotifications';
 
 import authService from '../services/authService';
 import messagingService from '../services/messagingService';
@@ -21,8 +22,14 @@ const DashboardScreen = (props) => {
     const [selected, setSelected] = useState("");
 
     const {
+        sendPushNotification,
+        expoPushToken
+    } = useExpoPushNotifications();
+
+    const {
         userVerified,
         connectToUser,
+        conversationStarted,
         notification
     } = useWebSockets();
 
@@ -46,8 +53,9 @@ const DashboardScreen = (props) => {
                     authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
                         .then((response) => {
                             storeUserData("JuniorChat_userDetail", response);
+                            
                         });
-                }  
+                }
             })
             .catch((err) => {
                 console.log(err.response)
@@ -57,6 +65,8 @@ const DashboardScreen = (props) => {
     useEffect(() => {
         loadUserData();
         setUpdate(false);
+        if (!notification.noPush) 
+            sendPushNotification(expoPushToken, notification);
     }, [notification, update]);
 
     const showUsers = (user) => {
@@ -89,6 +99,7 @@ const DashboardScreen = (props) => {
                 startNewConvo={messagingService.startNewConversation}
                 setUserList={setUserList}
                 setUpdate={setUpdate}
+                startedConversation={conversationStarted}
                 connect={connectToUser} />
 
             <FlatList

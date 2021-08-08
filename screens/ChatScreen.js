@@ -5,6 +5,7 @@ import MessageInput from '../components/MessageInput';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useWebSockets from '../hooks/useWebSockets';
+
 import messagingService from '../services/messagingService';
 
 const ChatScreen = (props) => {
@@ -71,7 +72,9 @@ const ChatScreen = (props) => {
                 setContent("");
                 setUpdate(true);
                 Keyboard.dismiss();
-                if (userOnline) sendNewMessage(userOnline, data);
+                if (userOnline) {
+                    sendNewMessage(userOnline, data);
+                }                
             }).catch(err => console.log(err));
     }
 

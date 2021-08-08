@@ -129,7 +129,7 @@ const ChatNavigation = createStackNavigator({
 
                             authService.setOnlineStatus(parseLogged.phone, { onlineTag: false })
                                 .then((response) => {
-                                    //console.log(response);
+                                    console.log(response);
                                 }).catch(err => console.log(err));
                         } catch (err) { console.log(err); }
                     }
