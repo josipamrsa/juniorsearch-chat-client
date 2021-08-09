@@ -30,7 +30,8 @@ const DashboardScreen = (props) => {
         userVerified,
         connectToUser,
         conversationStarted,
-        notification
+        notification,
+        setNotification
     } = useWebSockets();
 
     const storeUserData = async (key, value) => {
@@ -53,7 +54,7 @@ const DashboardScreen = (props) => {
                     authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
                         .then((response) => {
                             storeUserData("JuniorChat_userDetail", response);
-                            
+
                         });
                 }
             })
@@ -63,10 +64,12 @@ const DashboardScreen = (props) => {
     }
 
     useEffect(() => {
+        console.log(notification);
         loadUserData();
         setUpdate(false);
-        if (!notification.noPush) 
+        if (!notification.noPush)
             sendPushNotification(expoPushToken, notification);
+        setNotification('');
     }, [notification, update]);
 
     const showUsers = (user) => {

@@ -24,11 +24,11 @@ const useWebSockets = () => {
 
         // za update samo jedanput!
         socketRef.current.once(NEW_USER_LOGGED_IN, (incoming) => {
-            const incomingNotification = { 
-                ...incoming, 
-                noPush: true 
+            const incomingNotification = {
+                ...incoming,
+                noPush: true
             };
-            
+
             setNotification(incomingNotification);
         });
 
@@ -44,7 +44,7 @@ const useWebSockets = () => {
         socketRef.current.on(NEW_PRIVATE_MESSAGE, (incoming) => {
             //console.log(`MESSAGE: TO USER >> ${socketRef.current.id} >> FROM USER >> ${incoming.sender}`);
             const incomingMessage = { ...incoming }
-            setNotification({ 
+            setNotification({
                 notification: `New message from ${incomingMessage.sender}: ${incomingMessage.message.content}`,
                 noPush: false
             });
@@ -53,16 +53,16 @@ const useWebSockets = () => {
         socketRef.current.on(CONVERSATION_DELETED, (incoming) => {
             //console.log(`CONVERSATION: TO USER >> ${socketRef.current.id} >> FROM USER >> ${incoming.sender}`);
             const incomingNotification = { ...incoming };
-            setNotification({ 
+            setNotification({
                 notification: `User ${incomingNotification.sender} has deleted a conversation with you.`,
                 noPush: false
             });
         })
 
         socketRef.current.once(USER_LOGGED_OUT, (incoming) => {
-            const incomingNotification = { 
-                ...incoming, 
-                noPush: true 
+            const incomingNotification = {
+                ...incoming,
+                noPush: true
             };
 
             setNotification(incomingNotification);
@@ -108,6 +108,7 @@ const useWebSockets = () => {
     }
 
     const conversationDeleted = (participantId) => {
+        console.log(participantId);
         const data = {
             participant: participantId,
         };
@@ -123,6 +124,7 @@ const useWebSockets = () => {
         userId,
         userVerified,
         notification,
+        setNotification,
         conversationStarted,
         userSignOff,
         connectToUser,

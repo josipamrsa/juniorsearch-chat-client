@@ -19,7 +19,8 @@ const MessagedDashboardScreen = (props) => {
     const {
         notification,
         connectToUser,
-        conversationDeleted
+        conversationDeleted,
+        setNotification
     } = useWebSockets();
 
     const {
@@ -44,7 +45,7 @@ const MessagedDashboardScreen = (props) => {
         } catch (err) { console.log(err.response); }
     }
 
-    const deleteConversation = (users, token) => {
+    const deleteConversation = (users, token, connection) => {
         Alert.alert(
             "Delete conversation",
             "Are you sure you want to delete this conversation? Conversation will be deleted for both participants!",
@@ -55,7 +56,7 @@ const MessagedDashboardScreen = (props) => {
                 },
                 {
                     text: 'OK',
-                    onPress: () => deletePress(users, token)
+                    onPress: () => deletePress(users, token, connection)
                 }],
             { cancelable: false }
         );
@@ -65,19 +66,20 @@ const MessagedDashboardScreen = (props) => {
                 const c = response.id;
                 messagingService.deleteConversation(u, t, c)
                     .then((response) => {
-                        // TODO - obavijest o brisanju
                         setMessagedList(messagedList.filter(m => !u.includes(m.phoneNumber)));
-                        conversationDeleted();
+                        conversationDeleted(connection);
                     }).catch(err => console.log(err));
             }).catch(err => console.log(err));
         }
     }
 
     useEffect(() => {
+        console.log(notification);
         readUserData("JuniorChat_user");
         setUpdate(false);
-        if (!notification.noPush) 
+        if (!notification.noPush)
             sendPushNotification(expoPushToken, notification);
+        setNotification('');
     }, [notification, update]);
 
     const showUsers = (user) => {
@@ -90,7 +92,7 @@ const MessagedDashboardScreen = (props) => {
             onlineStatus={user.item.activeConnection}
             delete={() => {
                 let users = [loggedUser.phone, user.item.phoneNumber];
-                deleteConversation(users, loggedUser.token);
+                deleteConversation(users, loggedUser.token, user.item.activeConnection);
             }}
             startChat={() => {
                 props.navigation.navigate({
@@ -112,7 +114,7 @@ const MessagedDashboardScreen = (props) => {
         <View>
             <NavigationEvents onWillFocus={
                 /* FALA BOGU ISUSU KRISTU I DUHU SVETOM I SVIM APOSTOLIMA I SVIM SVECIMA SKUPA OVO KONACNO RADI */
-                (payload) => { setUpdate(true); } } />
+                (payload) => { setUpdate(true); }} />
             <FlatList
                 data={messagedList}
                 renderItem={showUsers} />

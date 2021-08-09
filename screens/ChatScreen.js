@@ -17,7 +17,10 @@ const ChatScreen = (props) => {
     const [author, setAuthor] = useState("");
     const [update, setUpdate] = useState(false);
 
-    const { notification } = useWebSockets();
+    const {
+        notification,
+        setNotification
+    } = useWebSockets();
 
     const userOnline = props.navigation.getParam('activeConnection'); // TODO - ako se korisnik ulogira?
     const sendNewMessage = props.navigation.getParam("sendNewMessage");
@@ -47,7 +50,7 @@ const ChatScreen = (props) => {
                 setUpdate(false);
             })
             .catch((err) => { console.log(err) });
-
+        setNotification('');
     }, [notification, update]);
 
     const showMessages = (messages) => {
@@ -74,7 +77,7 @@ const ChatScreen = (props) => {
                 Keyboard.dismiss();
                 if (userOnline) {
                     sendNewMessage(userOnline, data);
-                }                
+                }
             }).catch(err => console.log(err));
     }
 

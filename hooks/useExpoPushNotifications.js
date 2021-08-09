@@ -37,12 +37,15 @@ const useExpoPushNotifications = () => {
 
     // export...
     const sendPushNotification = async (expoToken, incoming) => {
-        console.log("send: " + incoming);
+        // zbog update dependencyja unutar komponenti tabularne navigacije aktivira 
+        // se konstantno push notifikacija prema korisniku koji poduzima akcije
+        // ovo bi trebalo raditi
+        if (!incoming) return;
 
         const message = {
             to: expoToken,
             sound: 'default',
-            title: "Chat",
+            title: "React Native Chat",
             body: incoming.notification
         }
 
@@ -81,7 +84,7 @@ const useExpoPushNotifications = () => {
             }
 
             token = (await Notifications.getExpoPushTokenAsync()).data;
-            console.log("request: " + token);
+            //console.log("request: " + token);
         }
 
         else {
@@ -109,7 +112,6 @@ const useExpoPushNotifications = () => {
 
     return {
         sendPushNotification,
-        registerForPushNotificationsAsync,
         expoPushToken
     }
 }
