@@ -5,7 +5,6 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    ImageBackground
 } from 'react-native';
 import CircleProfilePicture from './CircleProfilePicture';
 import OnlineStatus from './OnlineStatus';
@@ -14,15 +13,6 @@ const UserDetails = (props) => {
     return (
         <TouchableOpacity onPress={props.startChat} onLongPress={props.delete}>
             <View style={userDetailsStyle.section}>
-
-                {/* TODO - ne znam hoće li ostati, lijeno mi je radit slike */}
-                {/*<View style={userDetailsStyle.picture}>
-                    <ImageBackground
-                        source={{ uri: defaultPicture }}
-                        style={userDetailsStyle.pictureStyle}
-                        imageStyle={userDetailsStyle.rounded}>
-                    </ImageBackground>
-                </View> */}
 
                 <CircleProfilePicture
                     firstName={props.firstName[0]}

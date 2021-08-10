@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import ShowUserProfile from '../components/ShowUserProfile';
@@ -9,21 +8,7 @@ import NavButton from '../components/NavButton';
 
 const ProfileScreen = (props) => {
     const [loggedUser, setLoggedUser] = useState("");
-    const [userData, setUserData] = useState("");
     const editMode = props.navigation.getParam("editMode");
-
-    const readData = async (key) => {
-        try {
-            const data = await AsyncStorage.getItem(`@${key}`);
-            console.log(data);
-            setUserData(JSON.parse(data));
-            //console.log(data);
-        } catch (err) { console.log(err.response); }
-    }
-
-    useEffect(() => {
-        readData("JuniorChat_userDetail"); // TODO - spremiti pod Constants ove stringove
-    }, []);
 
     return (
         <View style={profStyle.screen}>
@@ -33,13 +18,7 @@ const ProfileScreen = (props) => {
                 </View> :
 
                 <View>
-                    <ShowUserProfile
-                        firstName={userData.firstName}
-                        lastName={userData.lastName}
-                        phone={userData.phoneNumber}
-                        activeConnection={userData.activeConnection}
-                        email={userData.email}
-                        location={userData.currentResidence} />
+                    <ShowUserProfile />
                 </View>}
 
         </View>
@@ -58,7 +37,7 @@ ProfileScreen.navigationOptions = (navigationData) => (
                         iconName='pencil'
                         onPress={() => {
                             let edit = navigationData.navigation.getParam("editMode");
-                            navigationData.navigation.setParams({editMode: !edit});
+                            navigationData.navigation.setParams({ editMode: !edit });
                             //console.log(navigationData.navigation.getParam("editMode"));
                         }} />
                 </HeaderButtons>
@@ -74,3 +53,6 @@ const profStyle = StyleSheet.create({
 });
 
 export default ProfileScreen;
+
+
+{ }

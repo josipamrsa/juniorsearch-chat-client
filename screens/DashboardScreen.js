@@ -64,7 +64,7 @@ const DashboardScreen = (props) => {
     }
 
     useEffect(() => {
-        console.log(notification);
+        //console.log(notification);
         loadUserData();
         setUpdate(false);
         if (!notification.noPush)

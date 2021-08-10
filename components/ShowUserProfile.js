@@ -1,34 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import OnlineStatus from './OnlineStatus';
 import CircleProfilePicture from './CircleProfilePicture';
 
+
 const ShowUserProfile = (props) => {
+    const [userData, setUserData] = useState("");
+    // Unknown User
+    const [firstName, setFirstName] = useState("U");
+    const [lastName, setLastName] = useState("U");
+
+
+    const readData = async (key) => {
+        try {
+            const data = await AsyncStorage.getItem(`@${key}`);
+            return JSON.parse(data);
+        } catch (err) { console.log(err.response); }
+    }
+
+    useEffect(() => {
+        readData("JuniorChat_userDetail").then((response) => {
+            setUserData(response);
+            setFirstName(response.firstName[0]);
+            setLastName(response.lastName[0]);
+        })
+    }, []);
 
     return (
         <View>
             <View style={showProfileStyle.nameHeader}>
                 <CircleProfilePicture
-                    firstName={"U"}
-                    lastName={"U"}
+                    firstName={firstName}
+                    lastName={lastName}
                     circleSize={{ padding: 0 }}
                     imageSize={{ width: 80, height: 80 }}
                     textSize={{ fontSize: 40 }} />
 
                 <Text style={showProfileStyle.userNameArea}>
-                    <Text style={showProfileStyle.userName}>{props.firstName} {props.lastName} </Text>
+                    <Text style={showProfileStyle.userName}>{userData.firstName} {userData.lastName} </Text>
                     <OnlineStatus
-                        color={props.activeConnection !== "" ?
+                        color={userData.activeConnection !== "" ?
                             { backgroundColor: "limegreen" } :
                             { backgroundColor: "lightgray" }
                         } />
-
                 </Text>
             </View>
 
             <View style={showProfileStyle.locationHeader}>
-                <Text style={showProfileStyle.locationHeaderText}>{props.location}</Text>
-
+                <Text style={showProfileStyle.locationHeaderText}>
+                    {userData.currentResidence}
+                </Text>
             </View>
 
             <View style={showProfileStyle.contactHeader}>
@@ -36,14 +60,12 @@ const ShowUserProfile = (props) => {
                 broj        091
                 email       mail  */}
                 <View>
-                    <Text>Phone number: {props.phone}</Text>
-                    <Text>Email: {props.email}</Text>
+                    <Text>Phone number: {userData.phoneNumber}</Text>
+                    <Text>Email: {userData.email}</Text>
                 </View>
 
             </View>
-
         </View>
-
     )
 };
 
@@ -64,7 +86,6 @@ const showProfileStyle = StyleSheet.create({
 
     locationHeader: {
         alignItems: 'center',
-
     },
 
     locationHeaderText: {
@@ -75,7 +96,6 @@ const showProfileStyle = StyleSheet.create({
 
     contactHeader: {
         alignItems: 'center',
-
     }
 });
 
