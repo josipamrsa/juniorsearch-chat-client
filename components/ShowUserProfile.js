@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import OnlineStatus from './OnlineStatus';
 import CircleProfilePicture from './CircleProfilePicture';
+import UserDetailGridCard from './UserDetailGridCard';
 
 
 const ShowUserProfile = (props) => {
@@ -49,21 +50,25 @@ const ShowUserProfile = (props) => {
                 </Text>
             </View>
 
-            <View style={showProfileStyle.locationHeader}>
-                <Text style={showProfileStyle.locationHeaderText}>
-                    {userData.currentResidence}
-                </Text>
-            </View>
+            <View style={showProfileStyle.detailHeader}>
 
-            <View style={showProfileStyle.contactHeader}>
-                {/* TODO - razdvojiti naslove i podatke, da su onako
-                broj        091
-                email       mail  */}
-                <View>
-                    <Text>Phone number: {userData.phoneNumber}</Text>
-                    <Text>Email: {userData.email}</Text>
+                <View style={showProfileStyle.detailArea}>
+                    <Text style={showProfileStyle.detailTitle}>
+                        User details
+                    </Text>
                 </View>
 
+                <UserDetailGridCard
+                    field={"Location:"}
+                    data={userData.currentResidence} />
+
+                <UserDetailGridCard
+                    field={"Email:"}
+                    data={userData.email} />
+
+                <UserDetailGridCard
+                    field={"Phone:"}
+                    data={userData.phoneNumber} />
             </View>
         </View>
     )
@@ -72,31 +77,70 @@ const ShowUserProfile = (props) => {
 const showProfileStyle = StyleSheet.create({
     nameHeader: {
         alignItems: 'center',
-        padding: 10,
-        backgroundColor: "lightgray"
+        padding: 20,
+        backgroundColor: "lightgray",
+        elevation: 5
     },
-
     userNameArea: {
         alignItems: 'center'
     },
-
     userName: {
         fontSize: 25
     },
-
-    locationHeader: {
-        alignItems: 'center',
-    },
-
     locationHeaderText: {
         fontSize: 20,
         fontStyle: "italic",
         color: "gray"
     },
-
-    contactHeader: {
+    detailHeader: {
         alignItems: 'center',
+        padding: 10,
+        marginTop: 10
+    },
+    detailTitle: {
+        fontWeight: "bold",
+        fontSize: 25,
+        marginBottom: 15
+    },
+    detailArea: {
+        flexDirection: 'row',
+        width: "90%",
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 2
     }
 });
 
 export default ShowUserProfile;
+
+
+/*<View style={showProfileStyle.detailArea}>
+                    <Text style={showProfileStyle.detailTextHeader}>
+                        Location:
+                    </Text>
+
+                    <Text style={showProfileStyle.detailText}>
+                        {userData.currentResidence}
+                    </Text>
+                </View>
+
+                <View style={showProfileStyle.detailArea}>
+                    <Text style={showProfileStyle.detailTextHeader}>
+                        Email:
+                    </Text>
+
+                    <Text style={showProfileStyle.detailText}>
+                        {userData.email}
+                    </Text>
+                </View>
+
+                <View style={showProfileStyle.detailArea}>
+                    <Text style={showProfileStyle.detailTextHeader}>
+                        Phone number:
+                    </Text>
+
+                    <Text style={showProfileStyle.detailText}>
+                        {userData.phoneNumber}
+                    </Text>
+                </View>
+ */
