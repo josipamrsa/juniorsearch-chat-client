@@ -78,7 +78,7 @@ const showProfileStyle = StyleSheet.create({
     nameHeader: {
         alignItems: 'center',
         padding: 20,
-        backgroundColor: "lightgray",
+        backgroundColor: "#f3f3f3",
         elevation: 5
     },
     userNameArea: {
@@ -86,11 +86,6 @@ const showProfileStyle = StyleSheet.create({
     },
     userName: {
         fontSize: 25
-    },
-    locationHeaderText: {
-        fontSize: 20,
-        fontStyle: "italic",
-        color: "gray"
     },
     detailHeader: {
         alignItems: 'center',
@@ -100,7 +95,8 @@ const showProfileStyle = StyleSheet.create({
     detailTitle: {
         fontWeight: "bold",
         fontSize: 25,
-        marginBottom: 15
+        marginBottom: 15,
+        color: "tomato",
     },
     detailArea: {
         flexDirection: 'row',

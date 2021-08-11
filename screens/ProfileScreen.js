@@ -5,6 +5,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import ShowUserProfile from '../components/ShowUserProfile';
 import NavButton from '../components/NavButton';
+import EditUserProfile from '../components/EditUserProfile';
 
 const ProfileScreen = (props) => {
     const [loggedUser, setLoggedUser] = useState("");
@@ -12,15 +13,7 @@ const ProfileScreen = (props) => {
 
     return (
         <View style={profStyle.screen}>
-            {editMode ?
-                <View>
-                    <Text>Edit mode!</Text>
-                </View> :
-
-                <View>
-                    <ShowUserProfile />
-                </View>}
-
+            {editMode ? <EditUserProfile /> : <ShowUserProfile />}
         </View>
     )
 };
