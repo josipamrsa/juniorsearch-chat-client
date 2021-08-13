@@ -19,19 +19,25 @@ const LoginScreen = (props) => {
     //console.log(signInService);
     const [email, setEmail] = useState("jopa@jopa.hr");
     const [pass, setPassword] = useState("jopica4");
+    const [loggedOut, setLoggedOut] = useState(false);
 
-    const checkEmail = (data) => setEmail(data); 
+    const checkEmail = (data) => setEmail(data);
     const checkPassword = (data) => setPassword(data);
+
+    useEffect(() => {
+        console.log(props.navigation);
+        setLoggedOut(props.navigation.getParam('logout') || false);
+    }, [loggedOut]);
 
     const signInUser = async () => {
         try {
             const signedIn = await signInService.signIn({ email, pass });
-            
+
             setEmail('');
             setPassword('');
 
             props.navigation.replace("Dashboard",
-                { },
+                {},
                 NavigationActions.navigate(
                     {
                         routeName: 'PrivateMessaging',

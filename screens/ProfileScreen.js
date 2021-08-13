@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { NavigationActions, NavigationEvents } from 'react-navigation';
 
 import ShowUserProfile from '../components/ShowUserProfile';
 import NavButton from '../components/NavButton';
@@ -10,10 +11,28 @@ import EditUserProfile from '../components/EditUserProfile';
 const ProfileScreen = (props) => {
     const [loggedUser, setLoggedUser] = useState("");
     const editMode = props.navigation.getParam("editMode");
+    const [update, setUpdate] = useState(false);
+
+    useEffect(() => {
+        setUpdate(false);
+    }, [update])
 
     return (
         <View style={profStyle.screen}>
-            {editMode ? <EditUserProfile /> : <ShowUserProfile />}
+            <NavigationEvents onWillFocus={
+                /* FALA BOGU ISUSU KRISTU I DUHU SVETOM I SVIM APOSTOLIMA I SVIM SVECIMA SKUPA OVO KONACNO RADI */
+                (payload) => { setUpdate(true); }} />
+
+            {
+                editMode ?
+                    <EditUserProfile
+                        update={update}
+                        setUpdate={setUpdate}
+                        setLoggedUser={setLoggedUser} /> :
+                    <ShowUserProfile
+                        update={update}
+                        setUpdate={setUpdate} />
+            }
         </View>
     )
 };
@@ -46,6 +65,3 @@ const profStyle = StyleSheet.create({
 });
 
 export default ProfileScreen;
-
-
-{ }

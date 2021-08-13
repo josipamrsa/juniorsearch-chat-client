@@ -14,7 +14,7 @@ import StartConversationModal from '../components/StartConversationModal';
 
 
 const DashboardScreen = (props) => {
-    const loggedUser = props.navigation.getParam("user");
+    const [loggedUser, setLoggedUser] = useState(props.navigation.getParam("user"));
 
     const [update, setUpdate] = useState(false);
     const [userList, setUserList] = useState([]);
@@ -37,10 +37,15 @@ const DashboardScreen = (props) => {
     const storeUserData = async (key, value) => {
         try {
             await AsyncStorage.setItem(`@${key}`, JSON.stringify(value));
+            let keys = await AsyncStorage.getAllKeys();
+            console.log(keys);
         } catch (err) { }
     }
 
     const loadUserData = () => {
+        console.log(props.navigation);
+        setLoggedUser(props.navigation.getParam("user"));
+
         authService.setToken(loggedUser.token);
         authService.fetchUserData(loggedUser.phone)
             .then((response) => {
@@ -53,22 +58,23 @@ const DashboardScreen = (props) => {
 
                     authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
                         .then((response) => {
+                            console.log(response);
                             storeUserData("JuniorChat_userDetail", response);
-
-                        });
+                        }).catch(err => console.log(err));
                 }
             })
             .catch((err) => {
-                console.log(err.response)
+                console.log(err);
             });
     }
 
     useEffect(() => {
-        //console.log(notification);
         loadUserData();
         setUpdate(false);
+
         if (!notification.noPush)
             sendPushNotification(expoPushToken, notification);
+
         setNotification('');
     }, [notification, update]);
 

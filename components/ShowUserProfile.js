@@ -14,7 +14,6 @@ const ShowUserProfile = (props) => {
     const [firstName, setFirstName] = useState("U");
     const [lastName, setLastName] = useState("U");
 
-
     const readData = async (key) => {
         try {
             const data = await AsyncStorage.getItem(`@${key}`);
@@ -27,8 +26,9 @@ const ShowUserProfile = (props) => {
             setUserData(response);
             setFirstName(response.firstName[0]);
             setLastName(response.lastName[0]);
-        })
-    }, []);
+        });
+        props.setUpdate(false);
+    }, [props.update]);
 
     return (
         <View>
