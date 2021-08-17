@@ -25,7 +25,7 @@ const LoginScreen = (props) => {
     const checkPassword = (data) => setPassword(data);
 
     useEffect(() => {
-        console.log(props.navigation);
+        //console.log(props.navigation);
         setLoggedOut(props.navigation.getParam('logout') || false);
     }, [loggedOut]);
 

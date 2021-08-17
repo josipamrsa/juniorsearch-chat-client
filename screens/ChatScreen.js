@@ -24,6 +24,7 @@ const ChatScreen = (props) => {
 
     const userOnline = props.navigation.getParam('activeConnection'); // TODO - ako se korisnik ulogira?
     const sendNewMessage = props.navigation.getParam("sendNewMessage");
+    const senderFullName = props.navigation.getParam("senderFullName");
 
     const users = [
         props.navigation.getParam('loggedPhone'),
@@ -76,7 +77,7 @@ const ChatScreen = (props) => {
                 setUpdate(true);
                 Keyboard.dismiss();
                 if (userOnline) {
-                    sendNewMessage(userOnline, data);
+                    sendNewMessage(userOnline, data, senderFullName);
                 }
             }).catch(err => console.log(err));
     }

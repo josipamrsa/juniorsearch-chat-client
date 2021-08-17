@@ -1,11 +1,11 @@
 //----BASE ROUTE----//
-//export const BASE_ROUTE = "http://192.168.0.11:3001";
-export const BASE_ROUTE = "http://192.168.43.71:3001";
+export const BASE_ROUTE = "http://192.168.0.11:3001";
+//export const BASE_ROUTE = "http://192.168.43.71:3001";
 //export const BASE_ROUTE = `https://rn-chat-server.herokuapp.com`;
 
 //----SOCKET SERVER URL----//
-//export const SOCKET_SERVER_URL = "http://192.168.0.11:3001";
-export const SOCKET_SERVER_URL = "http://192.168.43.71:3001";
+export const SOCKET_SERVER_URL = "http://192.168.0.11:3001";
+//export const SOCKET_SERVER_URL = "http://192.168.43.71:3001";
 //export const SOCKET_SERVER_URL = "https://rn-chat-server.herokuapp.com/";
 
 //----SERVER ROUTES----//

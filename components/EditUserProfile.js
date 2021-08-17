@@ -59,7 +59,6 @@ const EditUserProfile = (props) => {
 
     useEffect(() => {
         readData("JuniorChat_userDetail").then((response) => {
-            //console.log(response);
             setFirstName(response.firstName);
             setLastName(response.lastName);
             setLocation(response.currentResidence);

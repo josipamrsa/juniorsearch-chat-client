@@ -14,6 +14,8 @@ import messagingService from '../services/messagingService';
 const MessagedDashboardScreen = (props) => {
     const [update, setUpdate] = useState(false);
     const [loggedUser, setLoggedUser] = useState("");
+    const [fullName, setFullName] = useState("");
+
     const [messagedList, setMessagedList] = useState([]);
 
     const {
@@ -38,7 +40,7 @@ const MessagedDashboardScreen = (props) => {
             authService.fetchUserData(parseLogged.phone)
                 .then((response) => {
                     setMessagedList(response.chatted);
-
+                    setFullName(response.fullName);
                 }).catch((err) => {
                     console.log(err.response);
                 });
@@ -67,7 +69,7 @@ const MessagedDashboardScreen = (props) => {
                 messagingService.deleteConversation(u, t, c)
                     .then((response) => {
                         setMessagedList(messagedList.filter(m => !u.includes(m.phoneNumber)));
-                        conversationDeleted(connection);
+                        conversationDeleted(connection, fullName);
                     }).catch(err => console.log(err));
             }).catch(err => console.log(err));
         }
@@ -103,7 +105,9 @@ const MessagedDashboardScreen = (props) => {
                         phoneNumber: user.item.phoneNumber,
                         activeConnection: user.item.activeConnection,
                         userFullName: `${user.item.firstName} ${user.item.lastName}`,
-                        sendNewMessage: (participant, message) => connectToUser(participant, message)
+                        senderFullName: fullName,
+                        sendNewMessage: (participant, message, name) => 
+                            connectToUser(participant, message, name)
                     }
                 })
             }}

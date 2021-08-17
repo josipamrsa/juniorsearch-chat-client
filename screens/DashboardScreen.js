@@ -15,6 +15,7 @@ import StartConversationModal from '../components/StartConversationModal';
 
 const DashboardScreen = (props) => {
     const [loggedUser, setLoggedUser] = useState(props.navigation.getParam("user"));
+    const [fullName, setFullName] = useState("");
 
     const [update, setUpdate] = useState(false);
     const [userList, setUserList] = useState([]);
@@ -43,22 +44,23 @@ const DashboardScreen = (props) => {
     }
 
     const loadUserData = () => {
-        console.log(props.navigation);
+        //console.log(props.navigation);
         setLoggedUser(props.navigation.getParam("user"));
 
         authService.setToken(loggedUser.token);
         authService.fetchUserData(loggedUser.phone)
             .then((response) => {
                 setUserList(response.notChatted);
+                setFullName(response.fullName);
                 storeUserData("JuniorChat_user", loggedUser); // TODO - spremiti pod Constants ove stringove
-
+                //console.log(response);
                 // ovo bi moglo izazvati probleme kod osvježavanja veze (reload ili nepredvidljivi element možda...)
                 if (!response.activeConnection) {
                     let socket = userVerified();
-
+    
                     authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
                         .then((response) => {
-                            console.log(response);
+                            //console.log(response);
                             storeUserData("JuniorChat_userDetail", response);
                         }).catch(err => console.log(err));
                 }
@@ -105,6 +107,7 @@ const DashboardScreen = (props) => {
                 selected={selected}
                 logged={loggedUser}
                 userList={userList}
+                fullName={fullName}
                 startNewConvo={messagingService.startNewConversation}
                 setUserList={setUserList}
                 setUpdate={setUpdate}

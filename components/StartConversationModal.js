@@ -15,7 +15,7 @@ const StartConversationModal = (props) => {
         props.startNewConvo(users, loggedUser.token)
             .then((response) => {
                 props.setUserList(props.userList.filter(u => u.id !== selectedUser.id));
-                props.startedConversation(selectedUser.activeConnection);
+                props.startedConversation(selectedUser.activeConnection, props.fullName);
             }).catch(err => console.log(err));
     }
 

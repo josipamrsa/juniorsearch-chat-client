@@ -16,7 +16,7 @@ const useWebSockets = () => {
     useEffect(() => {
         // TODO - token!!!!
         socketRef.current = socket;
-
+        
         socketRef.current.on('connect', () => {
             console.log("...connecting");
             setUserId(socketRef.current.id);
@@ -36,7 +36,7 @@ const useWebSockets = () => {
             //console.log(`CONVERSATION: TO USER >> ${socketRef.current.id} >> FROM USER >> ${incoming.sender}`);
             const incomingNotification = { ...incoming };
             setNotification({
-                notification: `User ${incomingNotification.sender} has started a conversation with you.`,
+                notification: `User ${incomingNotification.name} has started a conversation with you.`,
                 noPush: false
             });
         });
@@ -45,7 +45,7 @@ const useWebSockets = () => {
             //console.log(`MESSAGE: TO USER >> ${socketRef.current.id} >> FROM USER >> ${incoming.sender}`);
             const incomingMessage = { ...incoming }
             setNotification({
-                notification: `New message from ${incomingMessage.sender}: ${incomingMessage.message.content}`,
+                notification: `New message from ${incomingMessage.name}: ${incomingMessage.message.content}`,
                 noPush: false
             });
         });
@@ -54,7 +54,7 @@ const useWebSockets = () => {
             //console.log(`CONVERSATION: TO USER >> ${socketRef.current.id} >> FROM USER >> ${incoming.sender}`);
             const incomingNotification = { ...incoming };
             setNotification({
-                notification: `User ${incomingNotification.sender} has deleted a conversation with you.`,
+                notification: `User ${incomingNotification.name} has deleted a conversation with you.`,
                 noPush: false
             });
         })
@@ -76,41 +76,44 @@ const useWebSockets = () => {
     // kao aktivni socket
     const userVerified = () => {
         socketRef.current.emit(USER_VERIFIED, {
-            socketId: socketRef.current.id
+            socketId: socketRef.current.id,
         });
 
         return socketRef.current.id;
     }
 
-    const conversationStarted = (participantId) => {
-        //console.log("STARTED CONVERSATION");
-        //console.log("From: " + socketRef.current.id);
-        //console.log("To: " + participantId);
+    const conversationStarted = (participantId, senderName) => {     
+        console.log(senderName);
 
         const data = {
             participant: participantId,
+            senderName: senderName
         };
 
         socketRef.current.emit(NEW_CONVERSATION_STARTED, data);
     }
 
-    const connectToUser = (participantId, message) => {
+    const connectToUser = (participantId, message, senderName) => {
         //console.log("PRIVATE MESSAGE");
         //console.log("From: " + socketRef.current.id);
         //console.log("To: " + participantId);
+        console.log(senderName);
 
         const data = {
             participant: participantId,
+            senderName: senderName,
             message
         };
 
         socketRef.current.emit(NEW_PRIVATE_MESSAGE, data);
     }
 
-    const conversationDeleted = (participantId) => {
-        console.log(participantId);
+    const conversationDeleted = (participantId, senderName) => {
+         console.log(senderName);
+
         const data = {
             participant: participantId,
+            senderName: senderName
         };
 
         socketRef.current.emit(CONVERSATION_DELETED, data);
