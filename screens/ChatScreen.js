@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Keyboard, StyleSheet, View, Text } from 'react-native';
+import { NavigationEvents } from 'react-navigation';
+
 import MessageBubble from '../components/MessageBubble';
 import MessageInput from '../components/MessageInput';
 
@@ -22,7 +24,7 @@ const ChatScreen = (props) => {
         setNotification
     } = useWebSockets();
 
-    const userOnline = props.navigation.getParam('activeConnection'); // TODO - ako se korisnik ulogira?
+    const userOnline = props.navigation.getParam('activeConnection');
     const sendNewMessage = props.navigation.getParam("sendNewMessage");
     const senderFullName = props.navigation.getParam("senderFullName");
 
@@ -41,6 +43,9 @@ const ChatScreen = (props) => {
     }
 
     useEffect(() => {
+        console.log(notification);
+        //console.log(props.navigation);
+
         readData("JuniorChat_user");
 
         messagingService.getCurrentConversation(users, loggedUser.token)
@@ -84,6 +89,10 @@ const ChatScreen = (props) => {
 
     return (
         <View style={chatStyle.screen}>
+            <NavigationEvents onWillFocus={
+                /* FALA BOGU ISUSU KRISTU I DUHU SVETOM I SVIM APOSTOLIMA I SVIM SVECIMA SKUPA OVO KONACNO RADI */
+                (payload) => { setUpdate(true); }} />
+
             <FlatList
                 inverted
                 data={currentConversation.messages}

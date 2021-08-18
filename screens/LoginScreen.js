@@ -16,16 +16,14 @@ import GridCard from '../components/GridCard';
 import InputComponent from '../components/InputComponent';
 
 const LoginScreen = (props) => {
-    //console.log(signInService);
-    const [email, setEmail] = useState("jopa@jopa.hr");
-    const [pass, setPassword] = useState("jopica4");
+    const [email, setEmail] = useState("jopa@mail.hr"); // TODO - maknut testne podatke
+    const [pass, setPassword] = useState("defaultsifra5"); // TODO - maknut testne podatke
     const [loggedOut, setLoggedOut] = useState(false);
 
     const checkEmail = (data) => setEmail(data);
     const checkPassword = (data) => setPassword(data);
 
     useEffect(() => {
-        //console.log(props.navigation);
         setLoggedOut(props.navigation.getParam('logout') || false);
     }, [loggedOut]);
 

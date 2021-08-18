@@ -76,12 +76,15 @@ const MessagedDashboardScreen = (props) => {
     }
 
     useEffect(() => {
-        //console.log(notification);
+        console.log(notification);
+        //console.log(props.navigation);
+
         readUserData("JuniorChat_user");
         setUpdate(false);
         if (!notification.noPush)
             sendPushNotification(expoPushToken, notification);
         setNotification('');
+        
     }, [notification, update]);
 
     const showUsers = (user) => {

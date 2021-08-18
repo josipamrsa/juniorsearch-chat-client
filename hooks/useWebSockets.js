@@ -16,14 +16,15 @@ const useWebSockets = () => {
     useEffect(() => {
         // TODO - token!!!!
         socketRef.current = socket;
-        
+
         socketRef.current.on('connect', () => {
-            console.log("...connecting");
             setUserId(socketRef.current.id);
         });
 
         // za update samo jedanput!
         socketRef.current.once(NEW_USER_LOGGED_IN, (incoming) => {
+            console.log("user logged in");
+            console.log(incoming);
             const incomingNotification = {
                 ...incoming,
                 noPush: true
@@ -33,7 +34,8 @@ const useWebSockets = () => {
         });
 
         socketRef.current.on(NEW_CONVERSATION_STARTED, (incoming) => {
-            //console.log(`CONVERSATION: TO USER >> ${socketRef.current.id} >> FROM USER >> ${incoming.sender}`);
+            console.log("user started conversation");
+            console.log(incoming);
             const incomingNotification = { ...incoming };
             setNotification({
                 notification: `User ${incomingNotification.name} has started a conversation with you.`,
@@ -42,7 +44,8 @@ const useWebSockets = () => {
         });
 
         socketRef.current.on(NEW_PRIVATE_MESSAGE, (incoming) => {
-            //console.log(`MESSAGE: TO USER >> ${socketRef.current.id} >> FROM USER >> ${incoming.sender}`);
+            console.log("user sent message");
+            console.log(incoming);
             const incomingMessage = { ...incoming }
             setNotification({
                 notification: `New message from ${incomingMessage.name}: ${incomingMessage.message.content}`,
@@ -51,7 +54,8 @@ const useWebSockets = () => {
         });
 
         socketRef.current.on(CONVERSATION_DELETED, (incoming) => {
-            //console.log(`CONVERSATION: TO USER >> ${socketRef.current.id} >> FROM USER >> ${incoming.sender}`);
+            console.log("user deleted conversation");
+            console.log(incoming);
             const incomingNotification = { ...incoming };
             setNotification({
                 notification: `User ${incomingNotification.name} has deleted a conversation with you.`,
@@ -60,6 +64,8 @@ const useWebSockets = () => {
         })
 
         socketRef.current.once(USER_LOGGED_OUT, (incoming) => {
+            console.log("user logged out");
+            console.log(incoming);
             const incomingNotification = {
                 ...incoming,
                 noPush: true
@@ -68,7 +74,9 @@ const useWebSockets = () => {
             setNotification(incomingNotification);
         });
 
-        return () => { socketRef.current.disconnect(); }
+        return () => {
+            console.log(socketRef.current.id);
+        }
     }, []);
 
     //----METODE----//
@@ -82,9 +90,7 @@ const useWebSockets = () => {
         return socketRef.current.id;
     }
 
-    const conversationStarted = (participantId, senderName) => {     
-        console.log(senderName);
-
+    const conversationStarted = (participantId, senderName) => {
         const data = {
             participant: participantId,
             senderName: senderName
@@ -94,11 +100,6 @@ const useWebSockets = () => {
     }
 
     const connectToUser = (participantId, message, senderName) => {
-        //console.log("PRIVATE MESSAGE");
-        //console.log("From: " + socketRef.current.id);
-        //console.log("To: " + participantId);
-        console.log(senderName);
-
         const data = {
             participant: participantId,
             senderName: senderName,
@@ -109,8 +110,6 @@ const useWebSockets = () => {
     }
 
     const conversationDeleted = (participantId, senderName) => {
-         console.log(senderName);
-
         const data = {
             participant: participantId,
             senderName: senderName
@@ -120,6 +119,7 @@ const useWebSockets = () => {
     }
 
     const userSignOff = () => {
+        // TODO - riješiti problem reconnectanja preko queryja kod closing handshake eventa?
         socketRef.current.disconnect();
     }
 

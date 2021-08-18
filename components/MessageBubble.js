@@ -3,8 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import CircleProfilePicture from './CircleProfilePicture';
 
 const MessageBubble = (props) => {
-    //console.log(props);
-
     const authorName = {
         firstName: props.author.firstName[0],
         lastName: props.author.lastName[0]

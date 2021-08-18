@@ -42,8 +42,7 @@ const RegisterScreen = (props) => {
                 lastName,
                 location
             });
-            //console.log(signedUp);
-
+            
             setFirstName('');
             setLastName('');
             setEmail('');

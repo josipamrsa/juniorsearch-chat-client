@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { NavigationActions, NavigationEvents } from 'react-navigation';
+import { NavigationEvents } from 'react-navigation';
 
 import ShowUserProfile from '../components/ShowUserProfile';
 import NavButton from '../components/NavButton';
@@ -41,7 +41,6 @@ ProfileScreen.navigationOptions = (navigationData) => (
     {
         headerTitle: "User profile",
         headerRight: () => {
-            //console.log(navigationData.navigation);
             return (
                 <HeaderButtons HeaderButtonComponent={NavButton}>
                     <Item
@@ -50,7 +49,6 @@ ProfileScreen.navigationOptions = (navigationData) => (
                         onPress={() => {
                             let edit = navigationData.navigation.getParam("editMode");
                             navigationData.navigation.setParams({ editMode: !edit });
-                            //console.log(navigationData.navigation.getParam("editMode"));
                         }} />
                 </HeaderButtons>
             )

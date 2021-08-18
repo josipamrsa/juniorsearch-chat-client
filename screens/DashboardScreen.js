@@ -38,13 +38,10 @@ const DashboardScreen = (props) => {
     const storeUserData = async (key, value) => {
         try {
             await AsyncStorage.setItem(`@${key}`, JSON.stringify(value));
-            let keys = await AsyncStorage.getAllKeys();
-            console.log(keys);
         } catch (err) { }
     }
 
     const loadUserData = () => {
-        //console.log(props.navigation);
         setLoggedUser(props.navigation.getParam("user"));
 
         authService.setToken(loggedUser.token);
@@ -53,14 +50,12 @@ const DashboardScreen = (props) => {
                 setUserList(response.notChatted);
                 setFullName(response.fullName);
                 storeUserData("JuniorChat_user", loggedUser); // TODO - spremiti pod Constants ove stringove
-                //console.log(response);
                 // ovo bi moglo izazvati probleme kod osvježavanja veze (reload ili nepredvidljivi element možda...)
                 if (!response.activeConnection) {
                     let socket = userVerified();
     
                     authService.setOnlineStatus(loggedUser.phone, { socket, onlineTag: true })
                         .then((response) => {
-                            //console.log(response);
                             storeUserData("JuniorChat_userDetail", response);
                         }).catch(err => console.log(err));
                 }
@@ -71,6 +66,9 @@ const DashboardScreen = (props) => {
     }
 
     useEffect(() => {
+        console.log(notification);
+        //console.log(props.navigation);
+
         loadUserData();
         setUpdate(false);
 
