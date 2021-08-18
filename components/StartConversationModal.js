@@ -1,9 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Modal } from 'react-native';
-import CustomizableButton from './CustomizableButton';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Modal
+} from 'react-native';
 
-import { NavigationActions } from 'react-navigation'; // za ugniježđenu navigaciju
-//import messagingService from '../services/messagingService';
+import CustomizableButton from './CustomizableButton';
 
 const StartConversationModal = (props) => {
     const selectedUser = props.selected;
@@ -26,8 +29,8 @@ const StartConversationModal = (props) => {
             animationType="slide">
 
             <View style={convoModalStyle.area}>
-                <View>
-                    <Text>Start a conversation with {selectedUser.firstName} {selectedUser.lastName}?</Text>
+                <View style={convoModalStyle.prompt}>
+                    <Text style={convoModalStyle.promptText}>Start a conversation with {selectedUser.firstName} {selectedUser.lastName}?</Text>
                 </View>
 
                 <View style={convoModalStyle.header}>
@@ -53,27 +56,31 @@ const StartConversationModal = (props) => {
 
 const convoModalStyle = StyleSheet.create({
     area: {
-        backgroundColor: "white",
-        height: "20%",
-        marginTop: "50%",
-        marginLeft: "10%",
-        width: "75%",
-        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "white",
+        marginTop: "60%",
+        marginLeft: "10%",
+        elevation: 5,
+        width: "80%",
         padding: 15,
-        borderRadius: 25,
-        elevation: 5
+        borderRadius: 20
     },
     header: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
+        flexDirection: "row"
+    },
+    prompt: {
+        marginBottom: 20,
+    },
+    promptText: {  
+        textAlign: "center",
+        fontSize: 15
     },
     cancelButton: {
         backgroundColor: "tomato",
-        width: "20%",
-        margin: 5
+        width: "35%",
+        padding: 15,
+        marginLeft: 5
     }
 });
 
