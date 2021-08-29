@@ -1,10 +1,23 @@
+//----KONFIGURACIJA----//
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
+
+import { 
+    StyleSheet, 
+    View 
+} from 'react-native';
+
+//----KOMPONENTE----//
 import InputComponent from './InputComponent';
 import CustomizableButton from './CustomizableButton';
 
+//----GLAVNA KOMPONENTA----//
 const MessageInput = (props) => {
+    //----METODE----//
+
+    // Slanje podataka u roditeljsku komponentu chat ekrana
     const checkContent = (data) => props.setContent(data); 
+
+    // Modul za slanje poruka
     return (
         <View style={inputStyle.area}>
             <InputComponent
@@ -21,6 +34,7 @@ const MessageInput = (props) => {
     )
 };
 
+//----STILOVI----//
 const inputStyle = StyleSheet.create({
     area: {
         padding: 10,

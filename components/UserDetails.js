@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+//----KONFIGURACIJA----//
+import React from 'react';
+
 import {
     StyleSheet,
     Text,
     View,
-    TextInput,
     TouchableOpacity,
 } from 'react-native';
+
+//----KOMPONENTE----//
 import CircleProfilePicture from './CircleProfilePicture';
 import OnlineStatus from './OnlineStatus';
 
+//----GLAVNA KOMPONENTA----//
 const UserDetails = (props) => {
+    // Prikaz detalja o korisnicima na nadzornoj ploči
     return (
+        /*
+            1. Kad je korisnik na nadzornoj ploči korisnika koji su nekontaktirani, može samo započeti razgovor
+            2. Kad je korisnik na nadzornoj ploči kontaktiranih korisnika, može započeti (nastaviti) razgovor,
+               te obrisati razgovor
+        */
+       
         <TouchableOpacity onPress={props.startChat} onLongPress={props.delete}>
             <View style={userDetailsStyle.section}>
 
@@ -46,6 +57,7 @@ const UserDetails = (props) => {
     );
 };
 
+//----STILOVI----//
 const userDetailsStyle = StyleSheet.create({
     section: {
         padding: 10,

@@ -1,15 +1,29 @@
+//----KONFIGURACIJA----//
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+
+import { 
+    StyleSheet, 
+    Text, 
+    View 
+} from 'react-native';
+
+//----KOMPONENTE----//
 import CircleProfilePicture from './CircleProfilePicture';
 
+//----GLAVNA KOMPONENTA----//
 const MessageBubble = (props) => {
+    //----STANJA----//
+
+    // Ime autora poruke
     const authorName = {
         firstName: props.author.firstName[0],
         lastName: props.author.lastName[0]
-    }
+    }       
 
+    // Je li poruka stigla od autora ili od drugog korisnika
     const isLogged = props.author.phoneNumber === props.logged.phone;
 
+    // Prikaz oblačića poruke na temelju toga je li poruka od ulogiranog korisnika ili ne
     return (
         <View style={bubbleStyle.frame}>
             <View style={isLogged ? bubbleStyle.loggedUser : bubbleStyle.otherUser}>
@@ -31,6 +45,7 @@ const MessageBubble = (props) => {
     );
 };
 
+//----STILOVI----//
 const bubbleStyle = StyleSheet.create({
     frame: {
         flex: 1,

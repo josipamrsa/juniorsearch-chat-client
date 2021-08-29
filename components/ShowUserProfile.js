@@ -1,19 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+//----KONFIGURACIJA----//
+import React, {
+    useState,
+    useEffect
+} from 'react';
+
+import {
+    StyleSheet,
+    Text,
+    View
+} from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+//----KOMPONENTE----//
 import OnlineStatus from './OnlineStatus';
 import CircleProfilePicture from './CircleProfilePicture';
 import UserDetailGridCard from './UserDetailGridCard';
 
-
+//----GLAVNA KOMPONENTA----//
 const ShowUserProfile = (props) => {
-    const [userData, setUserData] = useState("");
-    // Unknown User
-    const [firstName, setFirstName] = useState("U");
-    const [lastName, setLastName] = useState("U");
+    //----STANJA----//
+    const [userData, setUserData] = useState("");       // Korisnički podaci
+    const [firstName, setFirstName] = useState("U");    // Inicijal imena (Unknown)
+    const [lastName, setLastName] = useState("U");      // Inicijal prezimena (User)
 
+    //----METODE----//
+
+    // Učitavanje podataka iz AsyncStorage
     const readData = async (key) => {
         try {
             const data = await AsyncStorage.getItem(`@${key}`);
@@ -21,6 +34,7 @@ const ShowUserProfile = (props) => {
         } catch (err) { console.log(err.response); }
     }
 
+    // Učitavanje podataka o korisniku
     useEffect(() => {
         readData("JuniorChat_userDetail").then((response) => {
             setUserData(response);
@@ -30,6 +44,7 @@ const ShowUserProfile = (props) => {
         props.setUpdate(false);
     }, [props.update]);
 
+    // Prikaz detalja o korisniku
     return (
         <View>
             <View style={showProfileStyle.nameHeader}>
@@ -74,6 +89,7 @@ const ShowUserProfile = (props) => {
     )
 };
 
+//----STILOVI----//
 const showProfileStyle = StyleSheet.create({
     nameHeader: {
         alignItems: 'center',
@@ -108,35 +124,3 @@ const showProfileStyle = StyleSheet.create({
 });
 
 export default ShowUserProfile;
-
-
-/*<View style={showProfileStyle.detailArea}>
-                    <Text style={showProfileStyle.detailTextHeader}>
-                        Location:
-                    </Text>
-
-                    <Text style={showProfileStyle.detailText}>
-                        {userData.currentResidence}
-                    </Text>
-                </View>
-
-                <View style={showProfileStyle.detailArea}>
-                    <Text style={showProfileStyle.detailTextHeader}>
-                        Email:
-                    </Text>
-
-                    <Text style={showProfileStyle.detailText}>
-                        {userData.email}
-                    </Text>
-                </View>
-
-                <View style={showProfileStyle.detailArea}>
-                    <Text style={showProfileStyle.detailTextHeader}>
-                        Phone number:
-                    </Text>
-
-                    <Text style={showProfileStyle.detailText}>
-                        {userData.phoneNumber}
-                    </Text>
-                </View>
- */

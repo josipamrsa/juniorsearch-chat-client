@@ -1,13 +1,15 @@
 //----KONFIGURACIJA----//
 import React from 'react';
+
 import {
     Text,
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
 
-
+//----GLAVNA KOMPONENTA----//
 const CustomizableButton = (props) => {
+    // Botun koji se može srediti
     return (
         <TouchableOpacity
             style={{ ...customizableStyle.buttonStyle, ...props.button }}
@@ -20,6 +22,7 @@ const CustomizableButton = (props) => {
     );
 }
 
+//----STILOVI----//
 const customizableStyle = StyleSheet.create({
     buttonStyle: {
         padding: 15,

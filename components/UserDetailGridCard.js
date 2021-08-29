@@ -1,7 +1,15 @@
+//----KONFIGURACIJA----//
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 
+import { 
+    StyleSheet, 
+    Text, 
+    View 
+} from 'react-native';
+
+//----GLAVNA KOMPONENTA----//
 const UserDetailGridCard = (props) => {
+    // Prikaz detalja o korisniku na profilu
     return (
        
             <View style={userDetailGridStyle.detailArea}>
@@ -16,6 +24,7 @@ const UserDetailGridCard = (props) => {
     )
 };
 
+//----STILOVI----//
 const userDetailGridStyle = StyleSheet.create({
     detailArea: {
         flexDirection: 'row',

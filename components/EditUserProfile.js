@@ -1,14 +1,33 @@
+//----KONFIGURACIJA----//
+import React, {
+    useState,
+    useEffect
+} from 'react';
 
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Alert
+} from 'react-native';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import InputComponent from './InputComponent';
-import CustomizableButton from './CustomizableButton';
+
+//----SERVISI----//
 import userService from '../services/userService';
 
+//----KOMPONENTE----//
+import InputComponent from './InputComponent';
+import CustomizableButton from './CustomizableButton';
+
+//----GLAVNA KOMPONENTA----//
 const EditUserProfile = (props) => {
+    //----STANJA----//
+
+    // Trenutno prijavljeni korisnik
     const [loggedUser, setLoggedUser] = useState("");
 
+    // Podaci korisnika za promjenu...
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [location, setLocation] = useState("");
@@ -19,12 +38,16 @@ const EditUserProfile = (props) => {
     const checkLocation = (data) => setLocation(data);
     const checkEmail = (data) => setEmail(data);
 
+    //----METODE----//
+
+    // Ažuriranje u AsyncStorage-u
     const updateUserData = async (key, value) => {
         try {
             await AsyncStorage.setItem(`@${key}`, JSON.stringify(value));
         } catch (err) { }
     }
 
+    // Čitanje podataka u AsyncStorageu
     const readData = async (key) => {
         try {
             const data = await AsyncStorage.getItem(`@${key}`);
@@ -32,7 +55,15 @@ const EditUserProfile = (props) => {
         } catch (err) { console.log(err.response); }
     }
 
+    // Ažuriranje korisnika u bazi
     const updateUser = () => {
+        /*
+            1. Dohvati sve podatke (izmjenjene i neizmjenjene)
+            2. Ažuriraj podatke u bazi podataka za korisnika, nakon toga i u AsyncStorageu
+            3. Obavijesti korisnika o uspješnim promjenama
+            4. Ako je došlo do greške, prikaži
+        */
+
         const updateDetails = {
             email,
             location,
@@ -57,6 +88,7 @@ const EditUserProfile = (props) => {
         );
     }
 
+    // Učitavanje podataka iz AsyncStorage-a
     useEffect(() => {
         readData("JuniorChat_userDetail").then((response) => {
             setFirstName(response.firstName);
@@ -70,6 +102,7 @@ const EditUserProfile = (props) => {
         });
     }, [props.update]);
 
+    // Forma za uređivanje podataka
     return (
         <View style={editProfileStyle.area}>
             <View style={editProfileStyle.editContainer}>
@@ -107,6 +140,7 @@ const EditUserProfile = (props) => {
     )
 };
 
+//----STILOVI----//
 const editProfileStyle = StyleSheet.create({
     area: {
         justifyContent: "center",

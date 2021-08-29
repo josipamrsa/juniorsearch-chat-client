@@ -1,3 +1,4 @@
+//----KONFIGURACIJA----//
 import React from "react";
 
 import { createStackNavigator } from "react-navigation-stack";
@@ -8,18 +9,25 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 
+//----WEBHOOKOVI----//
 import useWebSockets from "../hooks/useWebSockets";
+
+//----SERVISI----//
 import authService from "../services/authService";
 
+//----KOMPONENTE----//
 import ChatScreen from '../screens/ChatScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import MessagedDashboardScreen from "../screens/MessagedDashboardScreen";
-
 import NavButton from '../components/NavButton';
 
+//----TEMA----//
+import CurrentTheme from '../constants/CurrentTheme';
+
+//----STACK NAVIGACIJA - NADZORNA PLOČA----//
 const UsersStackNavigation = createStackNavigator({
     PrivateMessaging: {
         screen: DashboardScreen,
@@ -43,12 +51,14 @@ const ProfileStackNavigation = createStackNavigator({
         screen: ProfileScreen,
     },
 }, {
-    // za slanje inicijalnih parametara određene rute - u ovom slučaju je toggle edit/no edit za profil!
+    // Za slanje inicijalnih parametara određene rute 
+    // U ovom slučaju je toggle edit/no edit za profil
     initialRouteParams: {
         editMode: false
     }
 });
 
+//----TAB NAVIGACIJA NADZORNE PLOČE - STACK NAVIGATORI----//
 const userTabScreens = {
     Profile: {
         screen: ProfileStackNavigation,
@@ -78,6 +88,7 @@ const userTabScreens = {
     },
 }
 
+//----TAB NAVIGACIJA EKRANA PRIJAVE - STACK NAVIGATORI----//
 const signInTabScreens = {
     Login: {
         screen: LoginScreen,
@@ -97,21 +108,32 @@ const signInTabScreens = {
     }
 }
 
+// Opcije i stilizacija za razne platforme (Android)
 const tabOptions = {
     android: {
         activeColor: "white",
-        shifting: true
+        inactiveColor: CurrentTheme.INACTIVE_TAB_COLOR,
+        shifting: true,
+        barStyle: {
+            // Stilizacija TabNavigatora
+            backgroundColor: CurrentTheme.MAIN_TAB_COLOR
+        }
     }
 }
 
+//----TAB NAVIGATORI - WRAPPER----//
 const UsersTab = createMaterialBottomTabNavigator(userTabScreens, tabOptions.android);
 const LoginRegisterTab = createMaterialBottomTabNavigator(signInTabScreens, tabOptions.android);
 
+//----GLAVNA NAVIGACIJA----//
 const ChatNavigation = createStackNavigator({
     SignIn: {
         screen: LoginRegisterTab,
         navigationOptions: {
-            headerTitle: "Chat app sign in"
+            headerTitle: "Chat app sign in",
+            headerStyle: {
+                backgroundColor: CurrentTheme.PRIMARY_HEADER_COLOR
+            }
         }
     },
     Dashboard: {
@@ -120,36 +142,46 @@ const ChatNavigation = createStackNavigator({
             {
                 headerTitle: "Chat app dashboard",
                 headerRight: () => {
+                    // Dohvat metode za odjavu korisnika - obavijest za WebSocket
                     const { userSignOff } = useWebSockets();
 
+                    // Postavljanje offline statusa korisnika
                     const setOffline = async (key) => {
+                        /*
+                            1. Dohvati podatke iz AsyncStorage-a
+                            2. Preko podataka nađi korisnika i postavi njegov offline status
+                            3. Izvjesti o eventualnim greškama
+                        */
                         try {
                             const logged = await AsyncStorage.getItem(`@${key}`);
                             let parseLogged = JSON.parse(logged);
-
                             authService.setOnlineStatus(parseLogged.phone, { onlineTag: false })
-                                .then((response) => {
-                                    //console.log(response);
-                                }).catch(err => console.log(err));
+                                .then((response) => { }).catch(err => console.log(err)); 
                         } catch (err) { console.log(err); }
                     }
 
+                    // Odjava korisnika
                     const signOutUser = async () => {
-
+                        /*
+                            1. Dohvati sve ključeve vezane za ovu aplikaciju 
+                            2. Pozovi metodu koja postavlja offline status korisnika
+                            3. Nakon toga, ukloni sve ključeve vezane za aplikaciju te njihove
+                               vrijednosti - koristi se multiRemove umjesto clear radi slijedećeg
+                               https://react-native-async-storage.github.io/async-storage/docs/api#clear
+                            4. Makni aktivnu WebSocket vezu
+                            5. Vrati korisnika na ekran prijave
+                            6. Izvjesti o eventualnim greškama
+                        */
                         try {
-                            // dohvati sve ključeve
                             let keys = await AsyncStorage.getAllKeys();
                             setOffline("JuniorChat_user");
-                            //setUpdate(false);
-                            // koristi se ovo umjesto clear - https://react-native-async-storage.github.io/async-storage/docs/api#clear
+
                             await AsyncStorage.multiRemove(
                                 keys.filter(key => key.includes("JuniorChat"))
                             );
-                            // makni aktivnu socket vezu (?)
+                            
                             userSignOff();
-                            // vrati se na login ekran
                             navigation.replace("SignIn");
-
                         } catch (e) { console.log(e); }
                     }
 

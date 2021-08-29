@@ -1,15 +1,23 @@
+//----KONFIGURACIJA----//
 import React from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
 
+import { 
+    StyleSheet, 
+    View, 
+    TextInput 
+} from 'react-native';
+
+//----GLAVNA KOMPONENTA----//
 const InputComponent = (props) => {
-
+    // Za unos podataka
     return (
-        <View style={{...inputStyle.input, ...props.inputWidth}}>
-            <TextInput {...props}/>
+        <View style={{ ...inputStyle.input, ...props.inputWidth, ...props.inputStyle }}>
+            <TextInput {...props} />
         </View>
     )
 };
 
+//---STILOVI----//
 const inputStyle = StyleSheet.create({
     input: {
         padding: 10,

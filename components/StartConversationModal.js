@@ -1,4 +1,6 @@
+//----KONFIGURACIJA----//
 import React from 'react';
+
 import {
     StyleSheet,
     Text,
@@ -6,15 +8,27 @@ import {
     Modal
 } from 'react-native';
 
+//----KOMPONENTE----//
 import CustomizableButton from './CustomizableButton';
 
+//----GLAVNA KOMPONENTA----//
 const StartConversationModal = (props) => {
-    const selectedUser = props.selected;
-    const loggedUser = props.logged;
+    //----STANJA----//
+    const selectedUser = props.selected;                                // Odabrani korisnik za razgovor
+    const loggedUser = props.logged;                                    // Prijavljeni korisnik
+    const users = [selectedUser.phoneNumber, loggedUser.phone]          // Lista korisnika za stvaranje razgovora
 
-    const users = [selectedUser.phoneNumber, loggedUser.phone]
+    //----METODE----//
 
+    // Započni razgovor s korisnikom
     const startConversation = () => {
+        /*
+            1. Stvori novi razgovor u bazi podataka
+            2. Ažuriraj podatke u listi korisnika, te pošalji obavijest drugom
+               sudioniku o početku razgovora (poslat će se ako je online)
+            3. Eventualne greške prikaži
+        */
+
         props.startNewConvo(users, loggedUser.token)
             .then((response) => {
                 props.setUserList(props.userList.filter(u => u.id !== selectedUser.id));
@@ -22,6 +36,7 @@ const StartConversationModal = (props) => {
             }).catch(err => console.log(err));
     }
 
+    // Modalni prozor za započinjanje razgovora
     return (
         <Modal
             transparent={true}
@@ -54,6 +69,7 @@ const StartConversationModal = (props) => {
     )
 };
 
+//----STILOVI----//
 const convoModalStyle = StyleSheet.create({
     area: {
         justifyContent: "center",
