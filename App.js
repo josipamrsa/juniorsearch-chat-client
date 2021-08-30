@@ -15,7 +15,7 @@ export default function App() {
   // Kod navigacije je odmah moguće postaviti light ili dark mode
   return (
     <View style={styles.screen}>
-      <ChatNavigation theme={"dark"} />
+      <ChatNavigation />
     </View>
   );
 }

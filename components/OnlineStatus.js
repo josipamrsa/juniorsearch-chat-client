@@ -6,6 +6,9 @@ import {
     View 
 } from 'react-native';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----GLAVNA KOMPONENTA----//
 const OnlineStatus = (props) => {
     // Element prikaza online statusa korisnika
@@ -17,7 +20,7 @@ const OnlineStatus = (props) => {
 //----STILOVI----//
 const onlineStyle = StyleSheet.create({
     area: {
-        backgroundColor: "green",
+        backgroundColor: CurrentTheme.USER_ONLINE_COLOR,
         width: 10,
         height: 10,
         borderRadius: 25,

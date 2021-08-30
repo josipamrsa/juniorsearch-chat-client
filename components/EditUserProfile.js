@@ -20,6 +20,9 @@ import userService from '../services/userService';
 import InputComponent from './InputComponent';
 import CustomizableButton from './CustomizableButton';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----GLAVNA KOMPONENTA----//
 const EditUserProfile = (props) => {
     //----STANJA----//
@@ -114,21 +117,25 @@ const EditUserProfile = (props) => {
                 <InputComponent
                     placeholder="First name..."
                     value={firstName}
+                    inputStyle={editProfileStyle.input}
                     onChangeText={checkFirstName} />
 
                 <InputComponent
                     placeholder="Last name..."
                     value={lastName}
+                    inputStyle={editProfileStyle.input}
                     onChangeText={checkLastName} />
 
                 <InputComponent
                     placeholder="Location..."
                     value={location}
+                    inputStyle={editProfileStyle.input}
                     onChangeText={checkLocation} />
 
                 <InputComponent
                     placeholder="Email..."
                     value={email}
+                    inputStyle={editProfileStyle.input}
                     onChangeText={checkEmail} />
 
                 <CustomizableButton
@@ -158,10 +165,14 @@ const editProfileStyle = StyleSheet.create({
         fontSize: 25,
         marginBottom: 10,
         fontWeight: "bold",
-        color: "tomato"
+        color: CurrentTheme.USER_PROFILE_TITLE_COLOR
+    },
+    input: {
+        backgroundColor: CurrentTheme.INPUT_COLOR,
+        color: CurrentTheme.INPUT_TEXT_COLOR
     },
     button: {
-        backgroundColor: "tomato",
+        backgroundColor: CurrentTheme.SECOND_BUTTON_COLOR,
     }
 });
 

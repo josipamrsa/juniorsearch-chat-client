@@ -19,6 +19,9 @@ import CustomizableButton from '../components/CustomizableButton';      // Kompo
 import GridCard from '../components/GridCard';                          // Prikaz kartice za registraciju (stilizacija)
 import InputComponent from '../components/InputComponent';              // Komponenta za unos
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----EKRAN----//
 const RegisterScreen = (props) => {
     //----STANJA----//
@@ -85,11 +88,13 @@ const RegisterScreen = (props) => {
                         <InputComponent
                             placeholder="First name..."
                             value={firstName}
+                            inputStyle={registerStyle.input}
                             onChangeText={checkFirstName} />
 
                         <InputComponent
                             placeholder="Last name..."
                             value={lastName}
+                            inputStyle={registerStyle.input}
                             onChangeText={checkLastName} />
                     </View>
 
@@ -97,11 +102,13 @@ const RegisterScreen = (props) => {
                         <InputComponent
                             placeholder="Email address..."
                             value={email}
+                            inputStyle={registerStyle.input}
                             onChangeText={checkEmail} />
 
                         <InputComponent
                             placeholder="Password..."
                             value={pass}
+                            inputStyle={registerStyle.input}
                             onChangeText={checkPassword} />
                     </View>
 
@@ -109,11 +116,13 @@ const RegisterScreen = (props) => {
                         <InputComponent
                             placeholder="Phone number..."
                             value={phoneNumber}
+                            inputStyle={registerStyle.input}
                             onChangeText={checkPhoneNumber} />
 
                         <InputComponent
                             placeholder="Lives in..."
                             value={location}
+                            inputStyle={registerStyle.input}
                             onChangeText={checkLocation} />
                     </View>
 
@@ -135,13 +144,18 @@ const registerStyle = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: CurrentTheme.MAIN_SCREEN_COLOR
     },
     section: {
         marginBottom: 15
     },
     button: {
-        backgroundColor: "tomato",
+        backgroundColor: CurrentTheme.BUTTON_COLOR,
     },
+    input: {
+        backgroundColor: CurrentTheme.INPUT_COLOR,
+        color: CurrentTheme.INPUT_TEXT_COLOR
+    }
 });
 
 export default RegisterScreen;

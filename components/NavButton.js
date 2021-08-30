@@ -3,6 +3,9 @@ import React from 'react';
 import { HeaderButton } from 'react-navigation-header-buttons';
 import { Ionicons } from '@expo/vector-icons';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----GLAVNA KOMPONENTA----//
 const NavButton = (props) => {
     // Prikaz botuna u zaglavlju
@@ -11,7 +14,7 @@ const NavButton = (props) => {
             {...props}
             IconComponent={Ionicons}
             iconSize={22}
-            color={"black"}
+            color={CurrentTheme.MAIN_TEXT_COLOR}
         />
     )
 };

@@ -25,6 +25,9 @@ import messagingService from '../services/messagingService';                // M
 import UserDetails from '../components/UserDetails';
 import StartConversationModal from '../components/StartConversationModal';  // Modul za pokretanje razgovora
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----EKRAN----//
 const DashboardScreen = (props) => {
     //----STANJA----//
@@ -137,7 +140,7 @@ const DashboardScreen = (props) => {
     }
 
     return (
-        <View>
+        <View style={dashStyle.container}>
             <NavigationEvents onWillFocus={
                 /* 
                     Služi za ažuriranje kad se korisnik prebaci s jednog tab ekrana na drugi,
@@ -168,5 +171,12 @@ const DashboardScreen = (props) => {
 
     );
 };
+
+const dashStyle = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: CurrentTheme.MAIN_SCREEN_COLOR
+    }
+});
 
 export default DashboardScreen;

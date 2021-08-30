@@ -10,6 +10,9 @@ import {
 import InputComponent from './InputComponent';
 import CustomizableButton from './CustomizableButton';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----GLAVNA KOMPONENTA----//
 const MessageInput = (props) => {
     //----METODE----//
@@ -24,6 +27,7 @@ const MessageInput = (props) => {
                 value={props.content}
                 onChangeText={checkContent}
                 placeholder="Write a message..."
+                inputStyle={inputStyle.input}
                 inputWidth={{ width: "80%", marginRight: 5 }} />
 
             <CustomizableButton
@@ -42,8 +46,12 @@ const inputStyle = StyleSheet.create({
         alignItems: "center",
     },
     sendButton: {
-        backgroundColor: "blue",
+        backgroundColor: CurrentTheme.SECOND_BUTTON_COLOR,
         width: "20%"
+    },
+    input: {
+        backgroundColor: CurrentTheme.INPUT_COLOR,
+        color: CurrentTheme.INPUT_TEXT_COLOR
     }
 });
 

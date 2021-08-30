@@ -5,11 +5,36 @@ const PRIMARY_HEADER_COLOR = seashore.mouseyBrown;
 const SECONDARY_HEADER_COLOR = seashore.vintageDarkGray;
 const MAIN_TEXT_COLOR = seashore.vintageLightGray;
 const BUTTON_COLOR = seashore.sand;
+const SECOND_BUTTON_COLOR = seashore.tealGray;
 const MAIN_TAB_COLOR = seashore.tealGray;
 const INACTIVE_TAB_COLOR = seashore.seaFoam;
 const ACTIVE_TAB_COLOR = seashore.vintageLightGray;
 const INPUT_COLOR = seashore.vintageDarkGray;
 const INPUT_TEXT_COLOR = seashore.mouseyBrown;
+const MODAL_WINDOW_COLOR = "white";
+const MODAL_WINDOW_TEXT_COLOR = seashore.mouseyBrown;
+
+const USER_DETAIL_CONTAINER_COLOR = "white";
+const USER_DETAIL_CONTAINER_NAME_COLOR = seashore.sand;
+const USER_DETAIL_CONTAINER_MAIL_COLOR = seashore.vintageDarkGray;
+const USER_DETAIL_CONTAINER_LOCATION_COLOR = seashore.mouseyBrown;
+const USER_DETAIL_PICTURE_COLOR = seashore.seaFoam;
+const USER_DETAIL_INITIALS_COLOR = seashore.tealGray;
+
+const USER_ONLINE_COLOR = seashore.seaFoam;
+
+const USER_PROFILE_HEADER_COLOR = "white";
+const USER_PROFILE_HEADER_TITLE_COLOR = seashore.sand;
+const USER_PROFILE_TITLE_COLOR = seashore.mouseyBrown;
+const USER_PROFILE_HEADER_TEXT_COLOR = seashore.tealGray;
+const USER_PROFILE_DETAILS_HEADER_TEXT_COLOR = seashore.mouseyBrown;
+const USER_PROFILE_DETAILS_COLOR = "white";
+const USER_PROFILE_DETAILS_TEXT_COLOR = seashore.vintageDarkGray;
+
+const USER_MESSAGE_OTHER_USER = seashore.sand;
+const USER_MESSAGE_OTHER_USER_TEXT = seashore.mouseyBrown;
+const USER_MESSAGE_LOGGED_USER = seashore.tealGray;
+const USER_MESSAGE_LOGGED_USER_TEXT = "white";
 
 export default {
     MAIN_SCREEN_COLOR,
@@ -17,9 +42,30 @@ export default {
     SECONDARY_HEADER_COLOR,
     MAIN_TEXT_COLOR,
     BUTTON_COLOR,
+    SECOND_BUTTON_COLOR,
     MAIN_TAB_COLOR,
     INACTIVE_TAB_COLOR,
     ACTIVE_TAB_COLOR,
     INPUT_COLOR,
-    INPUT_TEXT_COLOR
+    INPUT_TEXT_COLOR,
+    MODAL_WINDOW_COLOR,
+    MODAL_WINDOW_TEXT_COLOR,
+    USER_DETAIL_CONTAINER_COLOR,
+    USER_DETAIL_CONTAINER_NAME_COLOR,
+    USER_DETAIL_CONTAINER_MAIL_COLOR,
+    USER_DETAIL_CONTAINER_LOCATION_COLOR,
+    USER_DETAIL_PICTURE_COLOR,
+    USER_DETAIL_INITIALS_COLOR,
+    USER_ONLINE_COLOR,
+    USER_PROFILE_HEADER_COLOR,
+    USER_PROFILE_HEADER_TITLE_COLOR,
+    USER_PROFILE_TITLE_COLOR,
+    USER_PROFILE_HEADER_TEXT_COLOR,
+    USER_PROFILE_DETAILS_HEADER_TEXT_COLOR,
+    USER_PROFILE_DETAILS_COLOR,
+    USER_PROFILE_DETAILS_TEXT_COLOR,
+    USER_MESSAGE_OTHER_USER,
+    USER_MESSAGE_OTHER_USER_TEXT,
+    USER_MESSAGE_LOGGED_USER,
+    USER_MESSAGE_LOGGED_USER_TEXT,
 }

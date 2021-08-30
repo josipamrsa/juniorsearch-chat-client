@@ -11,6 +11,9 @@ import {
 //----KOMPONENTE----//
 import CustomizableButton from './CustomizableButton';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----GLAVNA KOMPONENTA----//
 const StartConversationModal = (props) => {
     //----STANJA----//
@@ -50,7 +53,7 @@ const StartConversationModal = (props) => {
 
                 <View style={convoModalStyle.header}>
                     <CustomizableButton
-                        button={convoModalStyle.cancelButton}
+                        button={convoModalStyle.okButton}
                         description={"OK"}
                         action={() => {
                             startConversation();
@@ -74,7 +77,7 @@ const convoModalStyle = StyleSheet.create({
     area: {
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "white",
+        backgroundColor: CurrentTheme.MODAL_WINDOW_COLOR,
         marginTop: "60%",
         marginLeft: "10%",
         elevation: 5,
@@ -90,10 +93,17 @@ const convoModalStyle = StyleSheet.create({
     },
     promptText: {  
         textAlign: "center",
-        fontSize: 15
+        fontSize: 15,
+        color: CurrentTheme.MODAL_WINDOW_TEXT_COLOR
+    },
+    okButton: {
+        backgroundColor: CurrentTheme.SECOND_BUTTON_COLOR,
+        width: "35%",
+        padding: 15,
+        marginLeft: 5
     },
     cancelButton: {
-        backgroundColor: "tomato",
+        backgroundColor: CurrentTheme.BUTTON_COLOR,
         width: "35%",
         padding: 15,
         marginLeft: 5

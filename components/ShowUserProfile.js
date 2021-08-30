@@ -12,6 +12,9 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----KOMPONENTE----//
 import OnlineStatus from './OnlineStatus';
 import CircleProfilePicture from './CircleProfilePicture';
@@ -59,7 +62,7 @@ const ShowUserProfile = (props) => {
                     <Text style={showProfileStyle.userName}>{userData.firstName} {userData.lastName} </Text>
                     <OnlineStatus
                         color={userData.activeConnection !== "" ?
-                            { backgroundColor: "limegreen" } :
+                            { backgroundColor: CurrentTheme.USER_ONLINE_COLOR } :
                             { backgroundColor: "lightgray" }
                         } />
                 </Text>
@@ -94,14 +97,15 @@ const showProfileStyle = StyleSheet.create({
     nameHeader: {
         alignItems: 'center',
         padding: 20,
-        backgroundColor: "#f3f3f3",
+        backgroundColor: CurrentTheme.USER_PROFILE_HEADER_COLOR,
         elevation: 5
     },
     userNameArea: {
         alignItems: 'center'
     },
     userName: {
-        fontSize: 25
+        fontSize: 25,
+        color: CurrentTheme.USER_PROFILE_HEADER_TITLE_COLOR,
     },
     detailHeader: {
         alignItems: 'center',
@@ -112,7 +116,7 @@ const showProfileStyle = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 25,
         marginBottom: 15,
-        color: "tomato",
+        color: CurrentTheme.USER_PROFILE_TITLE_COLOR,
     },
     detailArea: {
         flexDirection: 'row',

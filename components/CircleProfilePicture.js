@@ -2,6 +2,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----GLAVNA KOMPONENTA---//
 const CircleProfilePicture = (props) => {
     // Prikaz kruga sa inicijalima korisnika
@@ -23,7 +26,7 @@ const circleStyle = StyleSheet.create({
     },
     letterCircle: {
         borderRadius: 50,
-        backgroundColor: "blue",
+        backgroundColor: CurrentTheme.USER_DETAIL_PICTURE_COLOR,
         width: 0,
         height: 0,
         justifyContent: 'center',
@@ -31,7 +34,7 @@ const circleStyle = StyleSheet.create({
     },
     letterCircleText: {
         fontSize: 20,
-        color: "white"
+        color: CurrentTheme.USER_DETAIL_INITIALS_COLOR
     },
 });
 

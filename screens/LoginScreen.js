@@ -1,7 +1,6 @@
 //----KONFIGURACIJA----//
 import React, {
     useState,
-    useEffect
 } from 'react';
 
 import {
@@ -15,8 +14,6 @@ import {
 // Ugnježđena navigacija - slanje parametara bez potrebe za korištenjem Reduxa
 import { NavigationActions } from 'react-navigation'; 
 
-import CurrentTheme from '../constants/CurrentTheme';
-
 //----SERVISI----//
 import signInService from '../services/signInService';
 
@@ -25,16 +22,19 @@ import CustomizableButton from '../components/CustomizableButton';      // Kompo
 import GridCard from '../components/GridCard';                          // Prikaz kartice za registraciju (stilizacija)
 import InputComponent from '../components/InputComponent';              // Komponenta za unos
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----EKRAN----//
 const LoginScreen = (props) => {
-    //const [email, setEmail] = useState("dave@mail.hr"); 
-    //const [pass, setPassword] = useState("sifra1234"); 
+    const [email, setEmail] = useState("dave@mail.hr"); 
+    const [pass, setPassword] = useState("sifra1234"); 
 
     //----STANJA----//
 
     // Podaci potrebni za prijavu...
-    const [email, setEmail] = useState("");                  
-    const [pass, setPassword] = useState("");               
+    /* const [email, setEmail] = useState("");                  
+    const [pass, setPassword] = useState("");         */       
     
     const checkEmail = (data) => setEmail(data);
     const checkPassword = (data) => setPassword(data);

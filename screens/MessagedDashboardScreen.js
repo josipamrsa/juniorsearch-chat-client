@@ -25,6 +25,9 @@ import messagingService from '../services/messagingService';                // M
 //----KOMPONENTE----//
 import UserDetails from '../components/UserDetails';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----EKRAN----//
 const MessagedDashboardScreen = (props) => {
     //----STANJA----//
@@ -169,7 +172,7 @@ const MessagedDashboardScreen = (props) => {
     }
 
     return (
-        <View>
+        <View style={messagedStyle.container}>
             <NavigationEvents onWillFocus={
                 /* 
                     Služi za ažuriranje kad se korisnik prebaci s jednog tab ekrana na drugi,
@@ -187,12 +190,11 @@ const MessagedDashboardScreen = (props) => {
     );
 };
 
-/* const messagedStyle = StyleSheet.create({
-    screen: {
+const messagedStyle = StyleSheet.create({
+    container: {
         flex: 1,
-        justifyContent: "flex-start",
-        alignItems: "center"
+        backgroundColor: CurrentTheme.MAIN_SCREEN_COLOR
     }
-}); */
+});
 
 export default MessagedDashboardScreen;

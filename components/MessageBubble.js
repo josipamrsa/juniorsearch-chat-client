@@ -10,6 +10,9 @@ import {
 //----KOMPONENTE----//
 import CircleProfilePicture from './CircleProfilePicture';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----GLAVNA KOMPONENTA----//
 const MessageBubble = (props) => {
     //----STANJA----//
@@ -66,7 +69,8 @@ const bubbleStyle = StyleSheet.create({
     },
 
     loggedUserText: {
-        backgroundColor: "tomato",
+        backgroundColor: CurrentTheme.USER_MESSAGE_LOGGED_USER,
+        color: CurrentTheme.USER_MESSAGE_LOGGED_USER_TEXT,
         padding: 15,
         borderRadius: 15,
         borderTopLeftRadius: 20,
@@ -76,7 +80,8 @@ const bubbleStyle = StyleSheet.create({
     },
 
     otherUserText: {
-        backgroundColor: "lightgray",
+        backgroundColor: CurrentTheme.USER_MESSAGE_OTHER_USER,
+        color: CurrentTheme.USER_MESSAGE_OTHER_USER_TEXT,
         padding: 15,
         borderRadius: 15,
         borderTopRightRadius: 20,

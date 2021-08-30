@@ -12,6 +12,9 @@ import {
 import CircleProfilePicture from './CircleProfilePicture';
 import OnlineStatus from './OnlineStatus';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----GLAVNA KOMPONENTA----//
 const UserDetails = (props) => {
     // Prikaz detalja o korisnicima na nadzornoj ploči
@@ -37,7 +40,7 @@ const UserDetails = (props) => {
                         {props.firstName} {props.lastName}
                         <OnlineStatus
                             color={props.onlineStatus ?
-                                { backgroundColor: "limegreen" } :
+                                { backgroundColor: CurrentTheme.USER_ONLINE_COLOR } :
                                 { backgroundColor: "lightgray" }
                             } />
                     </Text>
@@ -62,7 +65,7 @@ const userDetailsStyle = StyleSheet.create({
     section: {
         padding: 10,
         marginBottom: 5,
-        backgroundColor: "white",
+        backgroundColor: CurrentTheme.USER_DETAIL_CONTAINER_COLOR,
         borderRadius: 15,
         elevation: 2,
         flexDirection: "row",
@@ -70,13 +73,14 @@ const userDetailsStyle = StyleSheet.create({
     },
     name: {
         fontSize: 20,
-        color: "tomato",
+        color: CurrentTheme.USER_DETAIL_CONTAINER_NAME_COLOR,
     },
     location: {
-        fontStyle: "italic"
+        fontStyle: "italic",
+        color: CurrentTheme.USER_DETAIL_CONTAINER_LOCATION_COLOR,
     },
     mail: {
-        color: "gray"
+        color: CurrentTheme.USER_DETAIL_CONTAINER_MAIL_COLOR,
     }
 });
 

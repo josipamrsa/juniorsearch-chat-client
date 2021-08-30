@@ -24,6 +24,9 @@ import messagingService from '../services/messagingService';
 import MessageBubble from '../components/MessageBubble';
 import MessageInput from '../components/MessageInput';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----EKRAN----//
 const ChatScreen = (props) => {
     //----STANJA----//
@@ -162,7 +165,8 @@ ChatScreen.navigationOptions = (navigationData) => {
 const chatStyle = StyleSheet.create({
     screen: {
         flex: 1,
-        width: "100%"
+        width: "100%",
+        backgroundColor: CurrentTheme.MAIN_SCREEN_COLOR
     }
 });
 

@@ -32,7 +32,13 @@ const UsersStackNavigation = createStackNavigator({
     PrivateMessaging: {
         screen: DashboardScreen,
         navigationOptions: {
-            headerTitle: "Private messaging"
+            headerTitle: "Private messaging",
+            headerStyle: {
+                backgroundColor: CurrentTheme.SECONDARY_HEADER_COLOR
+            },
+            headerTitleStyle: {
+                color: CurrentTheme.MAIN_TEXT_COLOR
+            }
         }
     },
 });
@@ -41,7 +47,13 @@ const MessagedStackNavigation = createStackNavigator({
     MessagedUsers: {
         screen: MessagedDashboardScreen,
         navigationOptions: {
-            headerTitle: "Messaged users"
+            headerTitle: "Messaged users",
+            headerStyle: {
+                backgroundColor: CurrentTheme.SECONDARY_HEADER_COLOR
+            },
+            headerTitleStyle: {
+                color: CurrentTheme.MAIN_TEXT_COLOR
+            }
         }
     },
 });
@@ -49,6 +61,14 @@ const MessagedStackNavigation = createStackNavigator({
 const ProfileStackNavigation = createStackNavigator({
     UserProfile: {
         screen: ProfileScreen,
+        navigationOptions: {
+            headerStyle: {
+                backgroundColor: CurrentTheme.SECONDARY_HEADER_COLOR
+            },
+            headerTitleStyle: {
+                color: CurrentTheme.MAIN_TEXT_COLOR
+            }
+        }
     },
 }, {
     // Za slanje inicijalnih parametara određene rute 
@@ -133,6 +153,9 @@ const ChatNavigation = createStackNavigator({
             headerTitle: "Chat app sign in",
             headerStyle: {
                 backgroundColor: CurrentTheme.PRIMARY_HEADER_COLOR
+            },
+            headerTitleStyle: {
+                color: CurrentTheme.MAIN_TEXT_COLOR
             }
         }
     },
@@ -141,6 +164,13 @@ const ChatNavigation = createStackNavigator({
         navigationOptions: ({ navigation }) => (
             {
                 headerTitle: "Chat app dashboard",
+                headerStyle: {
+                    backgroundColor: CurrentTheme.PRIMARY_HEADER_COLOR
+                },
+                headerTitleStyle: {
+                    color: CurrentTheme.MAIN_TEXT_COLOR
+                },
+
                 headerRight: () => {
                     // Dohvat metode za odjavu korisnika - obavijest za WebSocket
                     const { userSignOff } = useWebSockets();
@@ -156,7 +186,7 @@ const ChatNavigation = createStackNavigator({
                             const logged = await AsyncStorage.getItem(`@${key}`);
                             let parseLogged = JSON.parse(logged);
                             authService.setOnlineStatus(parseLogged.phone, { onlineTag: false })
-                                .then((response) => { }).catch(err => console.log(err)); 
+                                .then((response) => { }).catch(err => console.log(err));
                         } catch (err) { console.log(err); }
                     }
 
@@ -179,7 +209,7 @@ const ChatNavigation = createStackNavigator({
                             await AsyncStorage.multiRemove(
                                 keys.filter(key => key.includes("JuniorChat"))
                             );
-                            
+
                             userSignOff();
                             navigation.replace("SignIn");
                         } catch (e) { console.log(e); }
@@ -198,10 +228,26 @@ const ChatNavigation = createStackNavigator({
     },
 
     Profile: {
-        screen: ProfileScreen
+        screen: ProfileScreen,
+        navigationOptions: {
+            headerStyle: {
+                backgroundColor: CurrentTheme.PRIMARY_HEADER_COLOR
+            },
+            headerTitleStyle: {
+                color: CurrentTheme.MAIN_TEXT_COLOR
+            }
+        }
     },
     ChatWindow: {
-        screen: ChatScreen
+        screen: ChatScreen,
+        navigationOptions: {
+            headerStyle: {
+                backgroundColor: CurrentTheme.PRIMARY_HEADER_COLOR
+            },
+            headerTitleStyle: {
+                color: CurrentTheme.MAIN_TEXT_COLOR
+            }
+        }
     },
 });
 

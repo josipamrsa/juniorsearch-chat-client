@@ -17,6 +17,9 @@ import ShowUserProfile from '../components/ShowUserProfile';
 import NavButton from '../components/NavButton';
 import EditUserProfile from '../components/EditUserProfile';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----EKRAN----//
 const ProfileScreen = (props) => {
     //----STANJA----//
@@ -80,7 +83,8 @@ ProfileScreen.navigationOptions = (navigationData) => (
 const profStyle = StyleSheet.create({
     screen: {
         flex: 1,
-        width: "100%"
+        width: "100%",
+        backgroundColor: CurrentTheme.MAIN_SCREEN_COLOR
     }
 });
 

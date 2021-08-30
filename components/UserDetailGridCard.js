@@ -7,11 +7,13 @@ import {
     View 
 } from 'react-native';
 
+//----TEME----//
+import CurrentTheme from '../constants/CurrentTheme';
+
 //----GLAVNA KOMPONENTA----//
 const UserDetailGridCard = (props) => {
     // Prikaz detalja o korisniku na profilu
     return (
-       
             <View style={userDetailGridStyle.detailArea}>
                 <Text style={userDetailGridStyle.detailTextHeader}>
                     {props.field}
@@ -36,13 +38,14 @@ const userDetailGridStyle = StyleSheet.create({
     detailTextHeader: {
         fontSize: 18,
         fontWeight: "bold",
-        color: "black"
+        color: CurrentTheme.USER_PROFILE_DETAILS_HEADER_TEXT_COLOR
     },
     detailText: {
         fontSize: 18,
         color: "black",
         width: "65%",
-        backgroundColor: "#eaeaea",
+        backgroundColor: CurrentTheme.USER_PROFILE_DETAILS_COLOR,
+        color: CurrentTheme.USER_PROFILE_DETAILS_TEXT_COLOR,
         borderRadius: 5,
         padding: 5
     }
